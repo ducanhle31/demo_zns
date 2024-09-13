@@ -1,5 +1,7 @@
 import { CreateProgramForm } from "./components/CreateProgramForm";
 import { ListTabs } from "./components/ListTabs";
+import { TemplateList } from "./components/TemplateList";
+import { UserListUidOa } from "./components/UserListUidOa";
 
 export default function Home() {
   return (
@@ -8,6 +10,8 @@ export default function Home() {
         <div className="text-3xl text-center">DEMO TIN OA & ZNS</div>
         <ListTabs />
         <CreateProgramForm />
+        <TemplateList />
+        <UserListUidOa />
       </main>
     </div>
   );

@@ -235,7 +235,7 @@ export const CreateProgramForm = () => {
         </>
       )}
 
-      <button type="submit">Tạo chương trình</button>
+      <button type="submit" className="bg-blue-500 text-white px-4 py-2">Tạo chương trình</button>
     </form>
   );
 };
