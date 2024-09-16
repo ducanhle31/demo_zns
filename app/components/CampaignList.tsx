@@ -24,7 +24,6 @@ export const CampaignList = () => {
         <tbody>
           {templates.map((template) => {
             const status = template.status || "undefined";
-            const success = template.success || "undefined";
 
             return (
               <tr key={template.campaign_id}>
