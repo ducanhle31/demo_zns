@@ -1,10 +1,11 @@
 import { useFetchCampaignList } from "../api/CampaignListApi";
+import { Loading } from "./Loading";
 
 export const CampaignList = () => {
   const { templates, loading } = useFetchCampaignList();
 
   if (loading) {
-    return <p>Loading templates...</p>;
+    return <Loading/>;
   }
 
   return (
