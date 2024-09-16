@@ -1,40 +1,31 @@
 "use client";
 import React, { useState, useEffect } from "react";
 import { fetchCustomers } from "../api/customerApi";
-import { useDispatch, useSelector } from "react-redux";
-import { setCustomer } from "../store/campaignSlice";
-import { RootState } from "../store";
+import { useCampaign } from "../hook/useCampaign";
 
-// Define the User type
 interface User {
   user_id: string;
 }
 
 export const CustomerSelect = () => {
-  const [users, setUsers] = useState<User[]>([]); // Define state for user list
-  const [selectedUsers, setSelectedUsers] = useState<string[]>([]); // For selected UIDs
+  const [users, setUsers] = useState<User[]>([]);
+  const [selectedUsers, setSelectedUsers] = useState<string[]>([]); 
   const [loading, setLoading] = useState(true);
-  const [page, setPage] = useState(0); // Current page index
-  const [hasMore, setHasMore] = useState(true); // Flag to check if more users exist
-  const [showModal, setShowModal] = useState(false); // Control modal visibility
+  const [page, setPage] = useState(0); 
+  const [hasMore, setHasMore] = useState(true); 
+  const [showModal, setShowModal] = useState(false);
   const usersPerPage = 50;
-  const dispatch = useDispatch();
-  const selectedCustomer = useSelector(
-    (state: RootState) => state.campaign.customer
-  );
+
+  const { customer, updateCustomer } = useCampaign();
 
   const fetchData = async (offset: number) => {
     try {
-      const data = await fetchCustomers(offset); // Use the API function
-
+      const data = await fetchCustomers(offset); 
       if (data.data.users.length < usersPerPage) {
-        setHasMore(false); // No more users to fetch
+        setHasMore(false);
       }
-
       setUsers((prevUsers) => {
         const newUsers = [...prevUsers, ...data.data.users];
-
-        // Create a new array with unique user_id values
         const uniqueUsers = newUsers.filter(
           (user, index, self) =>
             index === self.findIndex((u) => u.user_id === user.user_id)
@@ -51,19 +42,19 @@ export const CustomerSelect = () => {
   };
 
   useEffect(() => {
-    fetchData(page * usersPerPage); // Fetch users when page changes
+    fetchData(page * usersPerPage); 
   }, [page]);
 
   const loadMore = () => {
-    setPage((prevPage) => prevPage + 1); // Increment page to fetch the next set
+    setPage((prevPage) => prevPage + 1); 
   };
 
   const handleSelect = (userId: string) => {
     setSelectedUsers(
       (prevSelected) =>
         prevSelected.includes(userId)
-          ? prevSelected.filter((id) => id !== userId) // Deselect
-          : [...prevSelected, userId] // Select
+          ? prevSelected.filter((id) => id !== userId) 
+          : [...prevSelected, userId] 
     );
   };
 
@@ -71,12 +62,12 @@ export const CustomerSelect = () => {
     const allUserIds = users.map((user) => user.user_id);
     setSelectedUsers(
       selectedUsers.length === allUserIds.length ? [] : allUserIds
-    ); // Toggle select all
+    ); 
   };
 
   const handleConfirmSelection = () => {
-    dispatch(setCustomer(selectedUsers.join(","))); // Save selected users to Redux
-    setShowModal(false); // Close the modal
+    updateCustomer(selectedUsers.join(",")); 
+    setShowModal(false); 
   };
 
   return (
@@ -84,7 +75,7 @@ export const CustomerSelect = () => {
       <div className="font-bold">Gửi theo UID</div>
       <button
         onClick={() => setShowModal(true)}
-        className="bg-blue-500 text-white p-2 rounded"
+        className="bg-blue-500 text-white p-2 rounded text text-sm"
       >
         Chọn Khách Hàng
       </button>
@@ -118,14 +109,13 @@ export const CustomerSelect = () => {
               ))}
             </ul>
 
-            {/* Show Load More button if there are more users */}
             {hasMore && (
               <button
                 onClick={loadMore}
                 disabled={loading}
                 className="bg-green-500 text-white p-2 rounded"
               >
-                Load More
+                Xem thêm    
               </button>
             )}
 
@@ -148,9 +138,9 @@ export const CustomerSelect = () => {
       )}
       <div className="mt-2">
         <h3>Khách Hàng Đã Chọn:</h3>
-        {selectedCustomer && selectedCustomer.length > 0 ? (
+        {customer && customer.length > 0 ? (
           <ul>
-            {selectedCustomer.split(",").map((userId: string) => (
+            {customer.split(",").map((userId: string) => (
               <li key={userId}>User ID: {userId}</li>
             ))}
           </ul>

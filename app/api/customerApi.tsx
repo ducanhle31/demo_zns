@@ -1,7 +1,7 @@
 //customerApi.tsx
 import axios from "axios";
 
-const apiUrl = "http://localhost:3001/api/v1/uidoa";
+const apiUrl = "http://10.10.50.217:3001/api/v1/uidoa";
 
 export const fetchCustomers = async (offset: number) => {
   try {
