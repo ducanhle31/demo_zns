@@ -29,24 +29,27 @@ export const CampaignForm = () => {
 
   return (
     <div>
-      <h1>Tạo Chiến Dịch</h1>
-      <div>
-        <label>Tên Chiến Dịch:</label>
+      <h1 className="text-2xl font-bold mb-8">Thêm mới chiến dịch Zalo</h1>
+      <div className="py-4 space-x-4">
+        <label className="font-bold">Tên chiến dịch:</label>
         <input
           type="text"
           value={name}
           onChange={(e) => dispatch(setName(e.target.value))}
+          placeholder="Tên chiến dịch"
         />
       </div>
-      <div>
-        <label>Mô Tả Chiến Dịch:</label>
+      <div className="flex space-x-4">
+        <label className="font-bold">Mô tả:</label>
         <textarea
           value={description}
           onChange={(e) => dispatch(setDescription(e.target.value))}
+          placeholder="Mô tả chiến dịch"
         />
       </div>
-      <div>
+      <div >
         <CustomerSelect />
+        
       </div>
       <div>
         <TemplateSelect />
@@ -64,7 +67,7 @@ export const CampaignForm = () => {
         </select>
       </div>
       <div>
-        <label>Ngày Giờ Gửi:</label>
+        <label>Thời gian gửi:</label>
         <input
           type="datetime-local"
           value={date}

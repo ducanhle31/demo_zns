@@ -75,12 +75,13 @@ export const CustomerSelect = () => {
   };
 
   const handleConfirmSelection = () => {
-    dispatch(setCustomer(selectedUsers.join(','))); // Save selected users to Redux
+    dispatch(setCustomer(selectedUsers.join(","))); // Save selected users to Redux
     setShowModal(false); // Close the modal
   };
 
   return (
     <div>
+      <div className="font-bold">Gửi theo UID</div>
       <button
         onClick={() => setShowModal(true)}
         className="bg-blue-500 text-white p-2 rounded"
@@ -149,7 +150,7 @@ export const CustomerSelect = () => {
         <h3>Khách Hàng Đã Chọn:</h3>
         {selectedCustomer && selectedCustomer.length > 0 ? (
           <ul>
-            {selectedCustomer.split(',').map((userId: string) => (
+            {selectedCustomer.split(",").map((userId: string) => (
               <li key={userId}>User ID: {userId}</li>
             ))}
           </ul>
