@@ -1,15 +1,31 @@
+import { useState } from "react";
 import { useFetchCampaignList } from "../api/CampaignListApi";
 import { Loading } from "./Loading";
 
 export const CampaignList = () => {
   const { templates, loading } = useFetchCampaignList();
+  const [searchTerm, setSearchTerm] = useState("");
 
   if (loading) {
-    return <Loading/>;
+    return <Loading />;
   }
+
+  // Filter campaigns based on the search term
+  const filteredTemplates = templates.filter(template =>
+    template.campaign_id.toString().includes(searchTerm)
+  );
 
   return (
     <div className="bg-white p-8 rounded-lg shadow-lg text-black">
+      <div className="mb-4">
+        <input
+          type="text"
+          placeholder="Search by ID"
+          value={searchTerm}
+          onChange={(e) => setSearchTerm(e.target.value)}
+          className="p-2 border border-gray-300 rounded-lg w-full"
+        />
+      </div>
       <table className="table-auto w-full border-collapse border border-gray-300">
         <thead>
           <tr>
@@ -23,7 +39,7 @@ export const CampaignList = () => {
           </tr>
         </thead>
         <tbody>
-          {templates.map((template) => {
+          {filteredTemplates.map((template) => {
             const status = template.status || "undefined";
             return (
               <tr key={template.campaign_id}>
@@ -46,7 +62,7 @@ export const CampaignList = () => {
                   {template.total_successful_requests}
                 </td>
                 <td className="border border-gray-300 p-2">
-                  {status === "success" ? "Success" : ""}
+                  {status === "success" ? "Success" : "Pending"}
                 </td>
               </tr>
             );

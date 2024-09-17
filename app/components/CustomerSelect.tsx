@@ -138,7 +138,7 @@ export const CustomerSelect = () => {
         </div>
       )}
       <div className="mt-2">
-        <h3>Khách Hàng Đã Chọn:</h3>
+        <h3 className="text-lg font-semibold">Khách Hàng Đã Chọn:</h3>
         {customer && customer.length > 0 ? (
           <ul className="border border-gray-400 p-4 rounded">
             {customer.split(",").map((userId: string) => (

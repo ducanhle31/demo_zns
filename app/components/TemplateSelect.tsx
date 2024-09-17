@@ -90,7 +90,6 @@ export const TemplateSelect = () => {
 
   return (
     <div>
-      <h1 className=" font-bold text-black text-md text-center mb-2"> Gửi theo UID </h1>
       <div>
         <select
           onChange={(e) => handleSelectTemplate(Number(e.target.value))}

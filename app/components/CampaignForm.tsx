@@ -1,8 +1,9 @@
 "use client";
-import { CustomerSelect } from "./CustomerSelect";
 import { TemplateSelect } from "./TemplateSelect";
 import { useCampaign } from "../hook/useCampaign";
 import { useState } from "react";
+import PhoneSelector from "./PhoneSelector ";
+import CustomerSelector from "./customersData";
 
 const getLocalDateTime = () => {
   const now = new Date();
@@ -23,6 +24,7 @@ export const CampaignForm = () => {
     date,
     customer,
     templateId,
+    phone,
     updateName,
     updateDescription,
     updateSendMode,
@@ -39,6 +41,7 @@ export const CampaignForm = () => {
       date: submissionDate,
       templateId,
       customers: customer,
+      phone: phone,
     });
   };
 
@@ -50,10 +53,7 @@ export const CampaignForm = () => {
 
   return (
     <div className="bg-white p-8 rounded-lg shadow-lg text-black">
-      <div className="flex space-x-8"></div>
-      <h1 className="text-2xl font-bold mb-8 text-align">
-        Thêm mới chiến dịch Zalo
-      </h1>
+      <h1 className="text-2xl font-bold mb-8 text-align">Thêm mới chiến dịch Zalo</h1>
       <div className="flex space-x-8">
         <div className="flex-1">
           <div className="py-4">
@@ -128,36 +128,41 @@ export const CampaignForm = () => {
         <div className="flex-1">
           <div className="py-4">
             <button
-              className="bg-blue-500 text-white px-4 py-2 rounded mr-2"
+              className={`px-4 py-2 rounded mr-2 ${selectedOption === "ZNS" ? "bg-green-500" : "bg-blue-500"} text-white`}
               onClick={() => handleButtonClick("ZNS")}
             >
               Gửi theo ZNS
             </button>
             <button
-              className="bg-green-500 text-white px-4 py-2 rounded"
+              className={`px-4 py-2 rounded ${selectedOption === "UID" ? "bg-green-500" : "bg-blue-500"} text-white`}
               onClick={() => handleButtonClick("UID")}
             >
               Gửi theo UID
             </button>
           </div>
 
-          <div >
+          <div>
             {selectedOption === "ZNS" && (
               <>
+                <h1 className="font-bold text-black text-md text-center  ">Gửi theo ZNS</h1>
+                <div className="py-2">
+                  <PhoneSelector /> 
+                </div>
                 <div className="py-4">
                   <TemplateSelect />
                 </div>
               </>
             )}
             {selectedOption === "UID" && (
-                 <>
-                   <div className="py-2">
-                   <TemplateSelect />
-                 </div>
-                 <div className="py-2">
-                   <CustomerSelect />
-                 </div>
-               </>
+              <>
+                <h1 className="font-bold text-black text-md text-center ">Gửi theo UID</h1>
+                <div className="py-2">
+                  <TemplateSelect />
+                </div>
+                <div className="py-2">
+                  <CustomerSelector/>
+                </div>
+              </>
             )}
           </div>
         </div>
