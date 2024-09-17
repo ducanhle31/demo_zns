@@ -1,9 +1,9 @@
-"use client";
+import React, { useState } from 'react';
 import { TemplateSelect } from "./TemplateSelect";
 import { useCampaign } from "../hook/useCampaign";
-import { useState } from "react";
-import PhoneSelector from "./PhoneSelector ";
 import CustomerSelector from "./customersData";
+import axios from 'axios';
+import PhoneSelector from './PhoneSelector ';
 
 const getLocalDateTime = () => {
   const now = new Date();
@@ -18,49 +18,80 @@ const getLocalDateTime = () => {
 
 export const CampaignForm = () => {
   const {
-    name,
-    description,
+    campaign_name,
+    campaign_description,
     sendMode,
-    date,
-    customer,
+    campaign_time,
     templateId,
-    phone,
     updateName,
     updateDescription,
     updateSendMode,
     updateDate,
   } = useCampaign();
 
-  const handleSubmit = () => {
-    const submissionDate = sendMode === "immediate" ? getLocalDateTime() : date;
-
-    console.log({
-      name,
-      description,
-      sendMode,
-      date: submissionDate,
-      templateId,
-      customers: customer,
-      phone: phone,
-    });
-  };
-
   const [selectedOption, setSelectedOption] = useState<string | null>(null);
+  const [selectedPhones, setSelectedPhones] = useState<string[]>([]);
+  const [selectedCustomers, setSelectedCustomers] = useState<string[]>([]);
+  const [campaignType, setCampaignType] = useState<string | null>(null); // State for campaign_type
 
   const handleButtonClick = (option: string) => {
     setSelectedOption(option);
+    setCampaignType(option); // Update campaign_type based on button clicked
   };
+
+  const handleSubmit = async () => {
+    const isConfirmed = window.confirm("Bạn có chắc chắn muốn gửi chiến dịch này không?");
+    
+    if (!isConfirmed) {
+      return; // If the user cancels, stop the submission
+    }
+  
+    const submissionDate = sendMode === "immediate" ? getLocalDateTime() : campaign_name;
+  
+    const combinedCustomers = [
+      ...selectedPhones.map(phone => ({
+        phone,
+        customer_name: "Nguyễn Thị Hoàng Anh",
+        order_date: "20/03/2020",
+        order_code: "PE010299485",
+      })),
+      ...selectedCustomers.map(customer => ({
+        customer,
+        customer_name: "Nguyễn Thị Hoàng Anh",
+        order_date: "20/03/2020",
+        order_code: "PE010299485",
+      }))
+    ];
+  
+    const requestData = {
+      campaign_name,
+      campaign_description,
+      sendMode,
+      campaign_time: submissionDate,
+      templateId,
+      customers: combinedCustomers,
+      campaign_type: campaignType, 
+    };
+  
+    try {
+      const response = await axios.post('http://10.10.50.217:3001/api/v1/campaign', requestData);
+      console.log('Success:', response.data);
+    } catch (error) {
+      console.error('Error:', error);
+    }
+  };
+  
 
   return (
     <div className="bg-white p-8 rounded-lg shadow-lg text-black">
-      <h1 className="text-2xl font-bold mb-8 text-align">Thêm mới chiến dịch Zalo</h1>
+      <h1 className="text-2xl font-bold mb-8 text-center">Thêm mới chiến dịch Zalo</h1>
       <div className="flex space-x-8">
         <div className="flex-1">
           <div className="py-4">
             <label className="font-bold">Tên chiến dịch:</label>
             <input
               type="text"
-              value={name}
+              value={campaign_name}
               onChange={(e) => updateName(e.target.value)}
               placeholder="Tên chiến dịch"
               className="border p-2 rounded w-full"
@@ -70,38 +101,40 @@ export const CampaignForm = () => {
           <div className="py-4">
             <label className="font-bold">Mô tả:</label>
             <textarea
-              value={description}
+              value={campaign_description}
               onChange={(e) => updateDescription(e.target.value)}
               placeholder="Mô tả chiến dịch"
               className="border p-2 rounded w-full"
             />
           </div>
 
-          <label className="font-bold">Chế Độ Gửi:</label>
-          <div>
-            <label className="custom-radio">
-              <input
-                type="checkbox"
-                name="sendMode"
-                value="immediate"
-                checked={sendMode === "immediate"}
-                onChange={() => updateSendMode("immediate")}
-                className="mr-2"
-              />
-              Gửi ngay
-            </label>
+          <div className="py-4">
+            <label className="font-bold">Chế Độ Gửi:</label>
+            <div>
+              <label className="custom-radio">
+                <input
+                  type="radio"
+                  name="sendMode"
+                  value="immediate"
+                  checked={sendMode === "immediate"}
+                  onChange={() => updateSendMode("immediate")}
+                  className="mr-2"
+                />
+                Gửi ngay
+              </label>
 
-            <label className="pl-4">
-              <input
-                type="checkbox"
-                name="sendMode"
-                value="auto"
-                checked={sendMode === "auto"}
-                onChange={() => updateSendMode("auto")}
-                className="mr-2"
-              />
-              Gửi tự động
-            </label>
+              <label className="pl-4">
+                <input
+                  type="radio"
+                  name="sendMode"
+                  value="auto"
+                  checked={sendMode === "auto"}
+                  onChange={() => updateSendMode("auto")}
+                  className="mr-2"
+                />
+                Gửi tự động
+              </label>
+            </div>
           </div>
 
           {sendMode !== "immediate" && (
@@ -109,7 +142,7 @@ export const CampaignForm = () => {
               <label className="font-bold">Thời gian gửi:</label>
               <input
                 type="datetime-local"
-                value={date}
+                value={campaign_time}
                 onChange={(e) => updateDate(e.target.value)}
                 className="border p-2 rounded w-full"
               />
@@ -144,9 +177,9 @@ export const CampaignForm = () => {
           <div>
             {selectedOption === "ZNS" && (
               <>
-                <h1 className="font-bold text-black text-md text-center  ">Gửi theo ZNS</h1>
+                <h1 className="font-bold text-black text-md text-center">Gửi theo ZNS</h1>
                 <div className="py-2">
-                  <PhoneSelector /> 
+                  <PhoneSelector onSelectPhones={setSelectedPhones} /> 
                 </div>
                 <div className="py-4">
                   <TemplateSelect />
@@ -155,12 +188,9 @@ export const CampaignForm = () => {
             )}
             {selectedOption === "UID" && (
               <>
-                <h1 className="font-bold text-black text-md text-center ">Gửi theo UID</h1>
+                <h1 className="font-bold text-black text-md text-center">Gửi theo UID</h1>
                 <div className="py-2">
-                  <TemplateSelect />
-                </div>
-                <div className="py-2">
-                  <CustomerSelector/>
+                  <CustomerSelector onSelectCustome={setSelectedCustomers} />
                 </div>
               </>
             )}

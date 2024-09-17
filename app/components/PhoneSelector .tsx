@@ -1,123 +1,119 @@
-import React, { useState } from 'react';
-import { useCampaign } from '../hook/useCampaign';
+import React, { useState, useEffect } from 'react';
 
-interface PhoneData {
-  id: number;
-  phone: string;
+const initialData = [
+  { id: 1, phone: "84344480909", customers: "2559231188943244647", order_code: "PE010299485", status: "skipped" },
+  { id: 2, phone: "0985614219", customers: "Nguyễn Tiến Đạt", order_code: "PE010299485", status: "skipped" }
+];
+
+interface IPhoneSelectorProps {
+  onSelectPhones: (phones: string[]) => void;
 }
 
-export const PhoneSelector = () => {
-  const { updatePhone } = useCampaign(); 
+export const PhoneSelector  = (props:IPhoneSelectorProps) => {
+  const {onSelectPhones} =props
+  const [data, setData] = useState(initialData);
+  const [selectedIds, setSelectedIds] = useState<number[]>([]);
+  const [newPhone, setNewPhone] = useState<string>('');
+  const [error, setError] = useState<string>('');
 
-  const [data, setData] = useState<PhoneData[]>([
-    { id: 1, phone: "84344480909" },
-    { id: 2, phone: "84985614219" }
-  ]);
+  useEffect(() => {
+    const selectedPhones = data
+      .filter((item) => selectedIds.includes(item.id))
+      .map((item) => item.phone);
+    onSelectPhones(selectedPhones);
+  }, [selectedIds, data, onSelectPhones]);
 
-  const [selectedPhone, setSelectedPhone] = useState<string[]>([]);
-  const [newPhone, setNewPhone] = useState<string>("");
-  const [error, setError] = useState<string | null>(null);
-
-  const handleSelectPhone = (phone: string) => {
-    const newSelectedPhone = selectedPhone.includes(phone)
-      ? selectedPhone.filter(p => p !== phone)
-      : [...selectedPhone, phone];
-
-    setSelectedPhone(newSelectedPhone);
-    updatePhone(newSelectedPhone); 
+  const handleSelect = (id: number) => {
+    setSelectedIds((prev) =>
+      prev.includes(id) ? prev.filter((item) => item !== id) : [...prev, id]
+    );
   };
 
   const handleSelectAll = () => {
-    const newSelectedPhone = selectedPhone.length === data.length
-      ? []
-      : data.map(item => item.phone);
+    setSelectedIds(data.map((item) => item.id));
+  };
 
-    setSelectedPhone(newSelectedPhone);
-    updatePhone(newSelectedPhone);  
+  const handleDeselectAll = () => {
+    setSelectedIds([]);
   };
 
   const handleAddPhone = () => {
-    if (newPhone.trim() === "") return;
-
-    if (data.some(item => item.phone === newPhone.trim())) {
-      setError("Số điện thoại đã tồn tại.");
-      return;
+    if (/^\d+$/.test(newPhone) && !data.some(item => item.phone === newPhone)) {
+      const newId = data.length ? Math.max(...data.map(item => item.id)) + 1 : 1;
+      setData([...data, { id: newId, phone: newPhone, customers: '', order_code: '', status: '' }]);
+      setNewPhone('');
+      setError('');
+    } else if (!/^\d+$/.test(newPhone)) {
+      setError('Số điện thoại không hợp lệ. Vui lòng nhập số.');
+    } else {
+      setError('Số điện thoại đã tồn tại.');
     }
-
-    const newPhoneData: PhoneData = {
-      id: data.length + 1,
-      phone: newPhone.trim()
-    };
-
-    setData([...data, newPhoneData]);
-    setSelectedPhone([...selectedPhone, newPhone.trim()]); 
-    setNewPhone(""); 
-    setError(null); 
   };
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const newValue = e.target.value.replace(/[^0-9]/g, '');
-    setNewPhone(newValue);
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value;
+    if (/^\d*$/.test(value)) {
+      setNewPhone(value);
+      setError('');
+    }
+  };
+
+  const handleDeleteSelected = () => {
+    setData(data.filter(item => !selectedIds.includes(item.id)));
+    setSelectedIds([]);
   };
 
   return (
-    <div className="bg-white p-2 text-black">
+    <div className="p-4">
       <div className="mb-4">
         <input
-          type="tel"
+          type="text"
           value={newPhone}
-          onChange={handleChange}
-          placeholder="Nhập số điện thoại mới"
-          className="border p-2 rounded w-full"
+          onChange={handleInputChange}
+          className="border p-2 mr-2 text-sm"
+          placeholder="Nhập số điện thoại"
         />
         <button
           onClick={handleAddPhone}
-          className="bg-blue-500 text-white p-2 rounded mt-2 text-sm"
+          className="bg-green-500 text-white px-4 py-2 rounded text-sm"
         >
           Thêm số điện thoại
         </button>
         {error && <p className="text-red-500 mt-2">{error}</p>}
       </div>
-      <div className="mb-2">
-        <h1 className="text-xl font-bold mb-4">Chọn số điện thoại</h1>
-        <label className="flex items-center">
-          <input
-            type="checkbox"
-            checked={selectedPhone.length === data.length}
-            onChange={handleSelectAll}
-            className="mr-2"
-          />
-          Chọn tất cả
-        </label>
-      </div>
-
       <div>
-        {data.map(item => (
-          <div key={item.id} className="mb-2">
-            <label className="flex items-center">
-              <input
-                type="checkbox"
-                checked={selectedPhone.includes(item.phone)}
-                onChange={() => handleSelectPhone(item.phone)}
-                className="mr-2"
-              />
-              {item.phone}
-            </label>
+        {data.map((item) => (
+          <div key={item.id} className="flex items-center mb-2">
+            <input
+              type="checkbox"
+              checked={selectedIds.includes(item.id)}
+              onChange={() => handleSelect(item.id)}
+              className="mr-2"
+            />
+            <span>{item.phone} </span>
           </div>
         ))}
       </div>
-
-      <div className="mt-4">
-        <h2 className="text-lg font-semibold">Số đã chọn:</h2>
-        {selectedPhone.length > 0 ? (
-          <ul>
-            {selectedPhone.map(phone => (
-              <li key={phone}>{phone}</li>
-            ))}
-          </ul>
-        ) : (
-          <p>Chưa có số nào được chọn.</p>
-        )}
+      <div className="mb-4">
+        <button
+          onClick={handleSelectAll}
+          className="bg-blue-500 text-white px-4 py-2 rounded mr-2 text-sm"
+        >
+          Chọn tất cả
+        </button>
+        <button
+          onClick={handleDeselectAll}
+          className="bg-red-500 text-white px-4 py-2 rounded mr-2 text-sm"
+        >
+          Bỏ chọn tất cả
+        </button>
+        <button
+          onClick={handleDeleteSelected}
+          className="bg-red-500 text-white px-4 py-2 rounded text-sm"
+          disabled={selectedIds.length === 0}
+        >
+          Xóa số điện thoại đã chọn
+        </button>
       </div>
     </div>
   );

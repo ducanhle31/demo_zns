@@ -10,7 +10,6 @@ export const CampaignList = () => {
     return <Loading />;
   }
 
-  // Filter campaigns based on the search term
   const filteredTemplates = templates.filter(template =>
     template.campaign_id.toString().includes(searchTerm)
   );

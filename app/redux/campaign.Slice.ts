@@ -1,24 +1,28 @@
-// In your campaign.Slice.ts
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
+interface Customer {
+  phone: string;
+  customers: string; // Added property
+}
+
 interface CampaignState {
-  name: string;
-  description: string;
-  sendMode: "auto" | "immediate";
-  date: string;
-  customer: string;
+  campaign_name: string;
+  campaign_description: string;
+  sendMode: 'auto' | 'immediate';
+  campaign_time: string;
+  customers: Customer[];
   templateId: number | null;
-  phone: string[];
+  campaign_type: string;
 }
 
 const initialState: CampaignState = {
-  name: '',
-  description: '',
+  campaign_name: '',
+  campaign_description: '',
   sendMode: 'immediate',
-  date: '',
-  customer: '',
+  campaign_time: '',
+  customers: [],
   templateId: null,
-  phone: [], 
+  campaign_type: '',
 };
 
 const campaignSlice = createSlice({
@@ -26,13 +30,10 @@ const campaignSlice = createSlice({
   initialState,
   reducers: {
     setName(state, action: PayloadAction<string>) {
-      state.name = action.payload;
+      state.campaign_name = action.payload;
     },
     setDescription(state, action: PayloadAction<string>) {
-      state.description = action.payload;
-    },
-    setCustomer(state, action: PayloadAction<string>) {
-      state.customer = action.payload;
+      state.campaign_description = action.payload;
     },
     setTemplateId(state, action: PayloadAction<number | null>) {
       state.templateId = action.payload;
@@ -41,14 +42,45 @@ const campaignSlice = createSlice({
       state.sendMode = action.payload;
     },
     setDate(state, action: PayloadAction<string>) {
-      state.date = action.payload;
+      state.campaign_time = action.payload;
     },
-    setPhone(state, action: PayloadAction<string[]>)
-   { 
-      state.phone = action.payload;
+    setCustomers(state, action: PayloadAction<Customer[]>) {
+      state.customers = action.payload;
+    },
+    setCusType(state, action: PayloadAction<string>) {
+      state.campaign_type = action.payload;
+    },
+    setCustomerPhone(
+      state,
+      action: PayloadAction<{ customerIndex: number; phone: string }>
+    ) {
+      const { customerIndex, phone } = action.payload;
+      if (state.customers[customerIndex]) {
+        state.customers[customerIndex].phone = phone;
+      }
+    },
+    setCustomerString(
+      state,
+      action: PayloadAction<{ customerIndex: number; customers: string }>
+    ) {
+      const { customerIndex, customers } = action.payload;
+      if (state.customers[customerIndex]) {
+        state.customers[customerIndex].customers = customers;
+      }
     },
   },
 });
 
-export const { setName, setDescription, setCustomer, setTemplateId, setSendMode, setDate, setPhone } = campaignSlice.actions;
+export const {
+  setName,
+  setDescription,
+  setTemplateId,
+  setSendMode,
+  setDate,
+  setCustomers,
+  setCustomerPhone,
+  setCustomerString, 
+  setCusType
+} = campaignSlice.actions;
+
 export default campaignSlice.reducer;
