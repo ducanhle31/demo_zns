@@ -9,10 +9,10 @@ interface User {
 
 export const CustomerSelect = () => {
   const [users, setUsers] = useState<User[]>([]);
-  const [selectedUsers, setSelectedUsers] = useState<string[]>([]); 
+  const [selectedUsers, setSelectedUsers] = useState<string[]>([]);
   const [loading, setLoading] = useState(true);
-  const [page, setPage] = useState(0); 
-  const [hasMore, setHasMore] = useState(true); 
+  const [page, setPage] = useState(0);
+  const [hasMore, setHasMore] = useState(true);
   const [showModal, setShowModal] = useState(false);
   const usersPerPage = 50;
 
@@ -20,7 +20,7 @@ export const CustomerSelect = () => {
 
   const fetchData = async (offset: number) => {
     try {
-      const data = await fetchCustomers(offset); 
+      const data = await fetchCustomers(offset);
       if (data.data.users.length < usersPerPage) {
         setHasMore(false);
       }
@@ -30,7 +30,6 @@ export const CustomerSelect = () => {
           (user, index, self) =>
             index === self.findIndex((u) => u.user_id === user.user_id)
         );
-
         return uniqueUsers;
       });
 
@@ -42,19 +41,18 @@ export const CustomerSelect = () => {
   };
 
   useEffect(() => {
-    fetchData(page * usersPerPage); 
+    fetchData(page * usersPerPage);
   }, [page]);
 
   const loadMore = () => {
-    setPage((prevPage) => prevPage + 1); 
+    setPage((prevPage) => prevPage + 1);
   };
 
   const handleSelect = (userId: string) => {
-    setSelectedUsers(
-      (prevSelected) =>
-        prevSelected.includes(userId)
-          ? prevSelected.filter((id) => id !== userId) 
-          : [...prevSelected, userId] 
+    setSelectedUsers((prevSelected) =>
+      prevSelected.includes(userId)
+        ? prevSelected.filter((id) => id !== userId)
+        : [...prevSelected, userId]
     );
   };
 
@@ -62,17 +60,16 @@ export const CustomerSelect = () => {
     const allUserIds = users.map((user) => user.user_id);
     setSelectedUsers(
       selectedUsers.length === allUserIds.length ? [] : allUserIds
-    ); 
+    );
   };
 
   const handleConfirmSelection = () => {
-    updateCustomer(selectedUsers.join(",")); 
-    setShowModal(false); 
+    updateCustomer(selectedUsers.join(","));
+    setShowModal(false);
   };
 
   return (
     <div>
-      <div className="font-bold">Gửi theo UID</div>
       <button
         onClick={() => setShowModal(true)}
         className="bg-blue-500 text-white p-2 rounded text text-sm"
@@ -81,13 +78,17 @@ export const CustomerSelect = () => {
       </button>
 
       {showModal && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center">
-          <div className="bg-white p-5 rounded max-w-lg w-full">
-            <h2 className="text-lg font-bold mb-4">Chọn người dùng</h2>
-            <p>Total unique users: {users.length}</p>
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-end items-center ">
+          <div
+            className={`absolute right-0 top-0 h-full bg-white p-5 w-full max-w-lg transform transition-transform duration-300 ease-in-out ${
+              showModal ? "translate-x-0" : "translate-x-full"
+            }`}
+          >
+            <h2 className="text-lg font-bold my-2">Chọn người dùng</h2>
+            <p className="my-2">Số người dùng: {users.length}</p>
             <button
               onClick={handleSelectAll}
-              className="bg-gray-500 text-white p-2 rounded mb-4"
+              className="bg-gray-500 text-white p-2 rounded mb-4 text-sm"
             >
               {selectedUsers.length === users.length
                 ? "Bỏ chọn tất cả"
@@ -115,7 +116,7 @@ export const CustomerSelect = () => {
                 disabled={loading}
                 className="bg-green-500 text-white p-2 rounded"
               >
-                Xem thêm    
+                Xem thêm
               </button>
             )}
 
@@ -139,7 +140,7 @@ export const CustomerSelect = () => {
       <div className="mt-2">
         <h3>Khách Hàng Đã Chọn:</h3>
         {customer && customer.length > 0 ? (
-          <ul>
+          <ul className="border border-gray-400 p-4 rounded">
             {customer.split(",").map((userId: string) => (
               <li key={userId}>User ID: {userId}</li>
             ))}

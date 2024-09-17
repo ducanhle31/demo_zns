@@ -20,35 +20,8 @@ interface TemplateInfo {
   previewUrl: string;
 }
 
-const Modal = ({
-  show,
-  onClose,
-  children,
-}: {
-  show: boolean;
-  onClose: () => void;
-  children: React.ReactNode;
-}) => {
-  if (!show) return null;
-
-  return (
-    <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
-      <div className="bg-white p-5 rounded-lg">
-        {children}
-        <button
-          onClick={onClose}
-          className="mt-4 bg-red-500 text-white p-2 rounded"
-        >
-          Close
-        </button>
-      </div>
-    </div>
-  );
-};
-
 export const TemplateSelect = () => {
   const [templates, setTemplates] = useState<Template[]>([]);
-  const [showModal, setShowModal] = useState(false); 
   const [selectedTemplate, setSelectedTemplate] = useState<TemplateInfo | null>(
     null
   );
@@ -97,11 +70,7 @@ export const TemplateSelect = () => {
     fetchTemplatesWithPagination(page * templatesPerPage); 
   }, [page]);
 
-  const handleSelectTemplate = () => {
-    setShowModal(true); 
-  };
-
-  const handleTemplateCheckboxChange = async (templateId: number) => {
+  const handleSelectTemplate = async (templateId: number) => {
     const templateInfo = await fetchTemplateInfoById(templateId);
     if (templateInfo) {
       setSelectedTemplate(templateInfo); 
@@ -121,27 +90,23 @@ export const TemplateSelect = () => {
 
   return (
     <div>
-      <button
-        onClick={handleSelectTemplate}
-        className="bg-blue-500 text-white p-2 rounded text-sm"
-      >
-        Chọn Template
-      </button>
-
-      {hasMore && (
-        <div className="pagination mt-4">
-          <button onClick={handlePreviousPage} disabled={page === 0 || loading}>
-            Previous
-          </button>
-          <button onClick={handleNextPage} disabled={loading}>
-            Next
-          </button>
-        </div>
-      )}
+      <h1 className=" font-bold text-black text-md text-center mb-2"> Gửi theo UID </h1>
+      <div>
+        <select
+          onChange={(e) => handleSelectTemplate(Number(e.target.value))}
+          className="bg-blue-500 text-white p-2 rounded text-sm w-full"
+        >
+          <option value="">Lựa chọn Template</option>
+          {templates.map((template) => (
+            <option key={template.templateId} value={template.templateId}>
+              {template.templateName}
+            </option>
+          ))}
+        </select>
+      </div>
 
       {selectedTemplate && (
         <div className="mt-4">
-          <h2 className="text-xl font-semibold">Chi tiết mẫu ZNS</h2>
           <p>
             <strong>Template ID:</strong> {selectedTemplate.templateId}
           </p>
@@ -158,25 +123,16 @@ export const TemplateSelect = () => {
         </div>
       )}
 
-      <Modal show={showModal} onClose={() => setShowModal(false)}>
-        <div>
-          <h2 className="text-xl font-semibold">Select a Template</h2>
-          <ul>
-            {templates.map((template) => (
-              <li key={template.templateId} className="mb-2 flex items-center">
-                <input
-                  type="checkbox"
-                  onChange={() =>
-                    handleTemplateCheckboxChange(template.templateId)
-                  }
-                  className="mr-2"
-                />
-                <p>{template.templateName}</p>
-              </li>
-            ))}
-          </ul>
+      {hasMore && (
+        <div className="pagination mt-4">
+          <button onClick={handlePreviousPage} disabled={page === 0 || loading}>
+            Previous
+          </button>
+          <button onClick={handleNextPage} disabled={loading}>
+            Next
+          </button>
         </div>
-      </Modal>
+      )}
 
       {loading && <p>Loading...</p>}
     </div>

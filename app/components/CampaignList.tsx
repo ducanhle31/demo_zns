@@ -13,10 +13,10 @@ export const CampaignList = () => {
       <table className="table-auto w-full border-collapse border border-gray-300">
         <thead>
           <tr>
-            <th className="border border-gray-300 p-2">Id</th>
-            <th className="border border-gray-300 p-2">Tên Chiến Dịch</th>
-            <th className="border border-gray-300 p-2">Mô Tả</th>
-            <th className="border border-gray-300 p-2">Thời Gian</th>
+            <th className="border border-gray-300 p-2">ID</th>
+            <th className="border border-gray-300 p-2">Tên chiến dịch</th>
+            <th className="border border-gray-300 p-2">Mô tả</th>
+            <th className="border border-gray-300 p-2">Thời gian</th>
             <th className="border border-gray-300 p-2">Loại tin gửi</th>
             <th className="border border-gray-300 p-2">Số tin đã gửi</th>
             <th className="border border-gray-300 p-2">Trạng thái gửi</th>
@@ -25,7 +25,6 @@ export const CampaignList = () => {
         <tbody>
           {templates.map((template) => {
             const status = template.status || "undefined";
-
             return (
               <tr key={template.campaign_id}>
                 <td className="border border-gray-300 p-2">

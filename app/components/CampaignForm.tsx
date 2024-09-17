@@ -2,6 +2,18 @@
 import { CustomerSelect } from "./CustomerSelect";
 import { TemplateSelect } from "./TemplateSelect";
 import { useCampaign } from "../hook/useCampaign";
+import { useState } from "react";
+
+const getLocalDateTime = () => {
+  const now = new Date();
+  const year = now.getFullYear();
+  const month = String(now.getMonth() + 1).padStart(2, "0");
+  const day = String(now.getDate()).padStart(2, "0");
+  const hours = String(now.getHours()).padStart(2, "0");
+  const minutes = String(now.getMinutes()).padStart(2, "0");
+
+  return `${year}-${month}-${day}T${hours}:${minutes}`;
+};
 
 export const CampaignForm = () => {
   const {
@@ -18,18 +30,27 @@ export const CampaignForm = () => {
   } = useCampaign();
 
   const handleSubmit = () => {
+    const submissionDate = sendMode === "immediate" ? getLocalDateTime() : date;
+
     console.log({
       name,
       description,
       sendMode,
-      date,
+      date: submissionDate,
       templateId,
       customers: customer,
     });
   };
 
+  const [selectedOption, setSelectedOption] = useState<string | null>(null);
+
+  const handleButtonClick = (option: string) => {
+    setSelectedOption(option);
+  };
+
   return (
     <div className="bg-white p-8 rounded-lg shadow-lg text-black">
+      <div className="flex space-x-8"></div>
       <h1 className="text-2xl font-bold mb-8 text-align">
         Thêm mới chiến dịch Zalo
       </h1>
@@ -82,15 +103,19 @@ export const CampaignForm = () => {
               Gửi tự động
             </label>
           </div>
-          <div className="py-4">
-            <label className="font-bold">Thời gian gửi:</label>
-            <input
-              type="datetime-local"
-              value={date}
-              onChange={(e) => updateDate(e.target.value)}
-              className="border p-2 rounded w-full"
-            />
-          </div>
+
+          {sendMode !== "immediate" && (
+            <div className="py-4">
+              <label className="font-bold">Thời gian gửi:</label>
+              <input
+                type="datetime-local"
+                value={date}
+                onChange={(e) => updateDate(e.target.value)}
+                className="border p-2 rounded w-full"
+              />
+            </div>
+          )}
+
           <div className="py-4">
             <button
               onClick={handleSubmit}
@@ -102,10 +127,38 @@ export const CampaignForm = () => {
         </div>
         <div className="flex-1">
           <div className="py-4">
-            <CustomerSelect />
+            <button
+              className="bg-blue-500 text-white px-4 py-2 rounded mr-2"
+              onClick={() => handleButtonClick("ZNS")}
+            >
+              Gửi theo ZNS
+            </button>
+            <button
+              className="bg-green-500 text-white px-4 py-2 rounded"
+              onClick={() => handleButtonClick("UID")}
+            >
+              Gửi theo UID
+            </button>
           </div>
-          <div className="py-4">
-            <TemplateSelect />
+
+          <div >
+            {selectedOption === "ZNS" && (
+              <>
+                <div className="py-4">
+                  <TemplateSelect />
+                </div>
+              </>
+            )}
+            {selectedOption === "UID" && (
+                 <>
+                   <div className="py-2">
+                   <TemplateSelect />
+                 </div>
+                 <div className="py-2">
+                   <CustomerSelect />
+                 </div>
+               </>
+            )}
           </div>
         </div>
       </div>
