@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { useCampaign } from '../hook/useCampaign'; 
 
 interface CustomerData {
@@ -6,46 +6,47 @@ interface CustomerData {
   phone: string;
   customers: string; 
   order_code: string;
-  status: string;
 }
-
-const data: CustomerData[] = [
-  { id: 1, phone: "84344480909", customers: "2559231188943244647", order_code: "PE010299485", status: "skipped" },
-  { id: 2, phone: "84985614219", customers: "Nguyễn Tiến Đạt", order_code: "PE010299485", status: "skipped" }
-];
 
 interface CustomeSelectorProps {
   onSelectCustome: (customs: string[]) => void;
 }
 
-export const CustomerSelector = (props:CustomeSelectorProps) => {
-  const { onSelectCustome } = props;
-  const [selectedCustomers, setSelectedCustomers] = useState<string[]>([]);
-  const { updateCustomers } = useCampaign();
+export const CustomerSelector = ({ onSelectCustome }: CustomeSelectorProps) => {
+  const data: CustomerData[] = [
+    { id: 1, phone: "84344480909", customers: "2559231188943244647", order_code: "PE010299485" },
+    { id: 2, phone: "84985614219", customers: "Nguyễn Tiến Đạt", order_code: "PE010299485" }
+  ];
 
-  useEffect(() => {
-    onSelectCustome(selectedCustomers);
-  }, [selectedCustomers, onSelectCustome]);
+  const [selectedCustomers, setSelectedCustomers] = useState<Set<string>>(new Set());
+  const { updateCustomers } = useCampaign();
 
   const handleSelectCustomer = (customer: string) => {
     setSelectedCustomers(prev => {
-      const isSelected = prev.includes(customer);
-      const updatedSelection = isSelected
-        ? prev.filter(item => item !== customer)
-        : [...prev, customer];
-      updateCustomers(updatedSelection); 
+      const updatedSelection = new Set(prev);
+      if (updatedSelection.has(customer)) {
+        updatedSelection.delete(customer);
+      } else {
+        updatedSelection.add(customer);
+      }
+      const updatedCustomersArray = Array.from(updatedSelection);
+      updateCustomers(updatedCustomersArray);
+      onSelectCustome(updatedCustomersArray);
       return updatedSelection;
     });
   };
 
   const handleSelectAll = () => {
-    if (selectedCustomers.length === data.length) {
-      setSelectedCustomers([]);
+    if (selectedCustomers.size === data.length) {
+      setSelectedCustomers(new Set());
       updateCustomers([]); 
+      onSelectCustome([]); 
     } else {
-      const allCustomers = data.map(item => item.customers); 
-      setSelectedCustomers(allCustomers);
-      updateCustomers(allCustomers); 
+      const allCustomers = data.map(item => item.customers);
+      const allCustomerSet = new Set(allCustomers);
+      setSelectedCustomers(allCustomerSet);
+      updateCustomers(Array.from(allCustomerSet));
+      onSelectCustome(allCustomers);
     }
   };
 
@@ -57,7 +58,7 @@ export const CustomerSelector = (props:CustomeSelectorProps) => {
         <label className="flex items-center">
           <input
             type="checkbox"
-            checked={selectedCustomers.length === data.length}
+            checked={selectedCustomers.size === data.length}
             onChange={handleSelectAll}
             className="mr-2"
           />
@@ -71,7 +72,7 @@ export const CustomerSelector = (props:CustomeSelectorProps) => {
             <label className="flex items-center">
               <input
                 type="checkbox"
-                checked={selectedCustomers.includes(item.customers)}
+                checked={selectedCustomers.has(item.customers)}
                 onChange={() => handleSelectCustomer(item.customers)}
                 className="mr-2"
               />
@@ -83,9 +84,9 @@ export const CustomerSelector = (props:CustomeSelectorProps) => {
 
       <div className="mt-4">
         <h2 className="text-lg font-semibold">Khách hàng đã chọn:</h2>
-        {selectedCustomers.length > 0 ? (
+        {selectedCustomers.size > 0 ? (
           <ul>
-            {selectedCustomers.map((customer, index) => (
+            {Array.from(selectedCustomers).map((customer, index) => (
               <li key={index}>{customer}</li>
             ))}
           </ul>

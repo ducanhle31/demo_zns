@@ -50,13 +50,15 @@ export const CampaignForm = () => {
   
     const combinedCustomers = [
       ...selectedPhones.map(phone => ({
+        id:1,
         phone,
         customer_name: "Nguyễn Thị Hoàng Anh",
         order_date: "20/03/2020",
         order_code: "PE010299485",
       })),
-      ...selectedCustomers.map(customer => ({
-        customer,
+      ...selectedCustomers.map(customers => ({
+        id:1,
+        customers,
         customer_name: "Nguyễn Thị Hoàng Anh",
         order_date: "20/03/2020",
         order_code: "PE010299485",
