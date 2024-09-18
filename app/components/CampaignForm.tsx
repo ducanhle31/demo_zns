@@ -55,6 +55,9 @@ export const CampaignForm = () => {
         customer_name: "Nguyễn Thị Hoàng Anh",
         order_date: "20/03/2020",
         order_code: "PE010299485",
+        tuition_code: "PD010299485",
+        price_number: "2000",
+        custom_date: "30/03/2020"
       })),
       ...selectedCustomers.map(customers => ({
         id: 1,
@@ -80,7 +83,6 @@ export const CampaignForm = () => {
       const response = await axios.post('http://10.10.50.217:3001/api/v1/campaign', requestData);
       console.log('Success:', response.data);
   
-      // Success notification
       alert("Chiến dịch đã được gửi thành công!");
   
     } catch (error) {

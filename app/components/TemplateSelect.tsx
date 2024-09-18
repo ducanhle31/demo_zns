@@ -5,14 +5,14 @@ import { setTemplateId } from "../redux/campaign.Slice";
 import { fetchTemplates, fetchTemplateInfo } from "../api/templateApi";
 
 interface Template {
-  templateId: number;
+  templateId: string;
   templateName: string;
   createdTime: number;
   status: string;
   templateQuality: string;
 }
 interface TemplateInfo {
-  templateId: number;
+  templateId: string;
   templateName: string;
   createdTime: number;
   status: string;
@@ -56,7 +56,7 @@ export const TemplateSelect = () => {
     setLoading(false); 
   };
 
-  const fetchTemplateInfoById = async (templateId: number) => {
+  const fetchTemplateInfoById = async (templateId: string) => {
     try {
       const response = await fetchTemplateInfo(templateId); 
       return response.data; 
@@ -70,7 +70,7 @@ export const TemplateSelect = () => {
     fetchTemplatesWithPagination(page * templatesPerPage); 
   }, [page]);
 
-  const handleSelectTemplate = async (templateId: number) => {
+  const handleSelectTemplate = async (templateId: string) => {
     const templateInfo = await fetchTemplateInfoById(templateId);
     if (templateInfo) {
       setSelectedTemplate(templateInfo); 
@@ -92,7 +92,7 @@ export const TemplateSelect = () => {
     <div>
       <div>
         <select
-          onChange={(e) => handleSelectTemplate(Number(e.target.value))}
+          onChange={(e) => handleSelectTemplate((e.target.value))}
           className="bg-blue-500 text-white p-2 rounded text-sm w-full"
         >
           <option value="">Lựa chọn Template</option>
@@ -116,7 +116,7 @@ export const TemplateSelect = () => {
             src={selectedTemplate.previewUrl}
             width="400"
             height="400"
-            style={{ border: "none" }}
+            className="border-none"
             title="Template Preview"
           ></iframe>
         </div>

@@ -9,7 +9,7 @@ interface CustomerData {
 
 const initialData: CustomerData[] = [
   { id: 1, phone: "84344480909", customers: "2559231188943244647", order_code: "PE010299485", },
-  { id: 2, phone: "84985614219", customers: "7005047623821262293", order_code: "PE010299485",  }
+  { id: 2, phone: "84985614219", customers: "3273752948166242705", order_code: "PE010299485",  }
 ];
 
 interface CustomeSelectorProps {

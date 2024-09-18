@@ -13,7 +13,7 @@ export const fetchTemplates = async (offset: number) => {
   }
 };
 
-export const fetchTemplateInfo = async (templateId: number) => {
+export const fetchTemplateInfo = async (templateId: string) => {
   try {
     const response = await axios.post(
       `${templateInfoUrl}?template_id=${templateId}`

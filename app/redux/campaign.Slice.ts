@@ -11,7 +11,7 @@ interface CampaignState {
   sendMode: 'auto' | 'immediate';
   campaign_time: string;
   customers: Customer[];
-  templateId: number | null;
+  templateId: string;
   campaign_type: string;
 }
 
@@ -21,7 +21,7 @@ const initialState: CampaignState = {
   sendMode: 'immediate',
   campaign_time: '',
   customers: [],
-  templateId: null,
+  templateId: '',
   campaign_type: '',
 };
 
@@ -35,7 +35,7 @@ const campaignSlice = createSlice({
     setDescription(state, action: PayloadAction<string>) {
       state.campaign_description = action.payload;
     },
-    setTemplateId(state, action: PayloadAction<number | null>) {
+    setTemplateId(state, action: PayloadAction<string>) {
       state.templateId = action.payload;
     },
     setSendMode(state, action: PayloadAction<'auto' | 'immediate'>) {
