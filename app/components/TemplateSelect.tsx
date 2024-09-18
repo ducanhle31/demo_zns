@@ -26,8 +26,8 @@ export const TemplateSelect = () => {
     null
   );
   const [loading, setLoading] = useState(false); 
-  const [page, setPage] = useState(0); 
-  const [hasMore, setHasMore] = useState(true); 
+  const [page,] = useState(0); 
+  const [, setHasMore] = useState(true); 
   const dispatch = useDispatch();
   const templatesPerPage = 50;
 
@@ -78,15 +78,7 @@ export const TemplateSelect = () => {
     }
   };
 
-  const handleNextPage = () => {
-    setPage((prevPage) => prevPage + 1); 
-  };
 
-  const handlePreviousPage = () => {
-    if (page > 0) {
-      setPage((prevPage) => prevPage - 1); 
-    }
-  };
 
   return (
     <div>
@@ -122,16 +114,6 @@ export const TemplateSelect = () => {
         </div>
       )}
 
-      {hasMore && (
-        <div className="pagination mt-4">
-          <button onClick={handlePreviousPage} disabled={page === 0 || loading}>
-            Previous
-          </button>
-          <button onClick={handleNextPage} disabled={loading}>
-            Next
-          </button>
-        </div>
-      )}
 
       {loading && <p>Loading...</p>}
     </div>
