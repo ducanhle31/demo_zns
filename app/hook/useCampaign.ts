@@ -2,7 +2,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../redux/store";
 import { 
   setCustomerPhone,
-  setCustomers, 
+  setCustomerString, 
   setDate, 
   setDescription, 
   setName, 
@@ -24,8 +24,8 @@ export const useCampaign = () => {
   const updateCustomerPhone = (customerIndex: number, phone: string) => {
     dispatch(setCustomerPhone({ customerIndex, phone })); 
   };
-  const updateCustomers = (customers: string[]) => {
-    dispatch(setCustomers(customers.map(customer => ({ phone: '', customers: customer }))));
+  const updateCustomers = (customerIndex: number, customerName: string) => {
+    dispatch(setCustomerString({ customerIndex, customers: customerName }));
   };
 
   return {

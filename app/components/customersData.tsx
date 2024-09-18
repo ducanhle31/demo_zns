@@ -1,53 +1,48 @@
-import { useState } from 'react';
-import { useCampaign } from '../hook/useCampaign'; 
+import { useState, useEffect } from 'react';
 
 interface CustomerData {
   id: number;
   phone: string;
-  customers: string; 
+  customers: string;
   order_code: string;
 }
 
+const initialData: CustomerData[] = [
+  { id: 1, phone: "84344480909", customers: "2559231188943244647", order_code: "PE010299485", },
+  { id: 2, phone: "84985614219", customers: "7005047623821262293", order_code: "PE010299485",  }
+];
+
 interface CustomeSelectorProps {
-  onSelectCustome: (customs: string[]) => void;
+  onSelectCustome: (customers: string[]) => void;
 }
 
 export const CustomerSelector = ({ onSelectCustome }: CustomeSelectorProps) => {
-  const data: CustomerData[] = [
-    { id: 1, phone: "84344480909", customers: "2559231188943244647", order_code: "PE010299485" },
-    { id: 2, phone: "84985614219", customers: "Nguyễn Tiến Đạt", order_code: "PE010299485" }
-  ];
+  const [data] = useState(initialData);
+  const [selectedIds, setSelectedIds] = useState<number[]>([]);
+  
+  useEffect(() => {
+    const selectedCustomers = data
+      .filter((item) => selectedIds.includes(item.id))
+      .map((item) => item.customers);
+    onSelectCustome(selectedCustomers);
+  }, [selectedIds, data, onSelectCustome]);
 
-  const [selectedCustomers, setSelectedCustomers] = useState<Set<string>>(new Set());
-  const { updateCustomers } = useCampaign();
-
-  const handleSelectCustomer = (customer: string) => {
-    setSelectedCustomers(prev => {
-      const updatedSelection = new Set(prev);
-      if (updatedSelection.has(customer)) {
-        updatedSelection.delete(customer);
-      } else {
-        updatedSelection.add(customer);
-      }
-      const updatedCustomersArray = Array.from(updatedSelection);
-      updateCustomers(updatedCustomersArray);
-      onSelectCustome(updatedCustomersArray);
-      return updatedSelection;
-    });
+  const handleSelectCustomer = (id: number) => {
+    setSelectedIds((prev) =>
+      prev.includes(id) ? prev.filter((item) => item !== id) : [...prev, id]
+    );
   };
 
   const handleSelectAll = () => {
-    if (selectedCustomers.size === data.length) {
-      setSelectedCustomers(new Set());
-      updateCustomers([]); 
-      onSelectCustome([]); 
+    if (selectedIds.length === data.length) {
+      setSelectedIds([]);
     } else {
-      const allCustomers = data.map(item => item.customers);
-      const allCustomerSet = new Set(allCustomers);
-      setSelectedCustomers(allCustomerSet);
-      updateCustomers(Array.from(allCustomerSet));
-      onSelectCustome(allCustomers);
+      setSelectedIds(data.map((item) => item.id));
     }
+  };
+
+  const handleDeselectAll = () => {
+    setSelectedIds([]);
   };
 
   return (
@@ -58,7 +53,7 @@ export const CustomerSelector = ({ onSelectCustome }: CustomeSelectorProps) => {
         <label className="flex items-center">
           <input
             type="checkbox"
-            checked={selectedCustomers.size === data.length}
+            checked={selectedIds.length === data.length}
             onChange={handleSelectAll}
             className="mr-2"
           />
@@ -67,13 +62,13 @@ export const CustomerSelector = ({ onSelectCustome }: CustomeSelectorProps) => {
       </div>
 
       <div>
-        {data.map(item => (
+        {data.map((item) => (
           <div key={item.id} className="mb-2">
             <label className="flex items-center">
               <input
                 type="checkbox"
-                checked={selectedCustomers.has(item.customers)}
-                onChange={() => handleSelectCustomer(item.customers)}
+                checked={selectedIds.includes(item.id)}
+                onChange={() => handleSelectCustomer(item.id)}
                 className="mr-2"
               />
               {item.customers}
@@ -84,15 +79,26 @@ export const CustomerSelector = ({ onSelectCustome }: CustomeSelectorProps) => {
 
       <div className="mt-4">
         <h2 className="text-lg font-semibold">Khách hàng đã chọn:</h2>
-        {selectedCustomers.size > 0 ? (
+        {selectedIds.length > 0 ? (
           <ul>
-            {Array.from(selectedCustomers).map((customer, index) => (
-              <li key={index}>{customer}</li>
-            ))}
+            {data
+              .filter((item) => selectedIds.includes(item.id))
+              .map((item) => (
+                <li key={item.id}>{item.customers}</li>
+              ))}
           </ul>
         ) : (
           <p>Chưa có khách hàng nào được chọn.</p>
         )}
+      </div>
+
+      <div className="mb-4">
+        <button
+          onClick={handleDeselectAll}
+          className="bg-red-500 text-white px-4 py-2 rounded text-sm"
+        >
+          Bỏ chọn tất cả
+        </button>
       </div>
     </div>
   );

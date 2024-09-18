@@ -32,21 +32,21 @@ export const CampaignForm = () => {
   const [selectedOption, setSelectedOption] = useState<string | null>(null);
   const [selectedPhones, setSelectedPhones] = useState<string[]>([]);
   const [selectedCustomers, setSelectedCustomers] = useState<string[]>([]);
-  const [campaignType, setCampaignType] = useState<string | null>(null); // State for campaign_type
+  const [campaignType, setCampaignType] = useState<string | null>(null);
 
   const handleButtonClick = (option: string) => {
     setSelectedOption(option);
-    setCampaignType(option); // Update campaign_type based on button clicked
+    setCampaignType(option); 
   };
 
   const handleSubmit = async () => {
     const isConfirmed = window.confirm("Bạn có chắc chắn muốn gửi chiến dịch này không?");
     
     if (!isConfirmed) {
-      return; // If the user cancels, stop the submission
+      return; 
     }
   
-    const submissionDate = sendMode === "immediate" ? getLocalDateTime() : campaign_name;
+    const submissionDate = sendMode === "immediate" ? getLocalDateTime() : campaign_time;
   
     const combinedCustomers = [
       ...selectedPhones.map(phone => ({
@@ -62,6 +62,7 @@ export const CampaignForm = () => {
         customer_name: "Nguyễn Thị Hoàng Anh",
         order_date: "20/03/2020",
         order_code: "PE010299485",
+        templateId:"1123"
       }))
     ];
   
