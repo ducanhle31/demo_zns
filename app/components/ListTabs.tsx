@@ -8,7 +8,7 @@ import { CaNhan } from "./CaNhan";
 const TOKEN = process.env.TOKEN || "1234567890";
 
 export const ListTabs = () => {
-  const [activeTab, setActiveTab] = useState<string>("profile");
+  const [activeTab, setActiveTab] = useState<string>("1");
   const [isSending, setIsSending] = useState(false);
   const [responseMessage, setResponseMessage] = useState("");
 
@@ -171,7 +171,6 @@ export const ListTabs = () => {
           </div>
         ))}
 
-        {/* Button and Response Message */}
         <div className="mt-4">
           <button
             className="bg-blue-600 text-white px-4 py-2 rounded"

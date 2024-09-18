@@ -1,8 +1,7 @@
 "use client";
 import { Provider } from "react-redux";
-import { CampaignForm } from "./components/CampaignForm";
-
-import { store } from "./store";
+import { store } from "./redux/store";
+import { Navbar } from "./components/Navbar";
 
 export default function Home() {
   return (
@@ -10,8 +9,7 @@ export default function Home() {
       <div>
         <main className="max-w-7xl mx-auto  py-14">
           <div className="text-3xl text-center">DEMO TIN OA & ZNS</div>
-          {/* <ListTabs /> */}
-          <CampaignForm />
+          <Navbar />
         </main>
       </div>
     </Provider>
