@@ -2,7 +2,7 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 interface Customer {
   phone: string;
-  customers: string; // Added property
+  customers: string; 
 }
 
 interface CampaignState {
