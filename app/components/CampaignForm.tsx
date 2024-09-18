@@ -41,7 +41,7 @@ export const CampaignForm = () => {
 
   const handleSubmit = async () => {
     const isConfirmed = window.confirm("Bạn có chắc chắn muốn gửi chiến dịch này không?");
-    
+  
     if (!isConfirmed) {
       return; 
     }
@@ -50,19 +50,19 @@ export const CampaignForm = () => {
   
     const combinedCustomers = [
       ...selectedPhones.map(phone => ({
-        id:1,
+        id: 1,
         phone,
         customer_name: "Nguyễn Thị Hoàng Anh",
         order_date: "20/03/2020",
         order_code: "PE010299485",
       })),
       ...selectedCustomers.map(customers => ({
-        id:1,
+        id: 1,
         customers,
         customer_name: "Nguyễn Thị Hoàng Anh",
         order_date: "20/03/2020",
         order_code: "PE010299485",
-        templateId:"1123"
+        templateId: "1123"
       }))
     ];
   
@@ -79,6 +79,10 @@ export const CampaignForm = () => {
     try {
       const response = await axios.post('http://10.10.50.217:3001/api/v1/campaign', requestData);
       console.log('Success:', response.data);
+  
+      // Success notification
+      alert("Chiến dịch đã được gửi thành công!");
+  
     } catch (error) {
       console.error('Error:', error);
     }
