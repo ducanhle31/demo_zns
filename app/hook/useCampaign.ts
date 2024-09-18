@@ -17,7 +17,7 @@ export const useCampaign = () => {
 
   const updateName = (campaign_name: string) => dispatch(setName(campaign_name));
   const updateDescription = (campaign_description: string) => dispatch(setDescription(campaign_description));
-  const updateTemplateId = (templateId: number | null) => dispatch(setTemplateId(templateId));
+  const updateTemplateId = (templateId: string) => dispatch(setTemplateId(templateId));
   const updateSendMode = (sendMode: "auto" | "immediate") => dispatch(setSendMode(sendMode));
   const updateDate = (campaign_time: string) => dispatch(setDate(campaign_time));
 
