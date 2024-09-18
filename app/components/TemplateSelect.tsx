@@ -78,14 +78,13 @@ export const TemplateSelect = () => {
     }
   };
 
-
-
   return (
     <div>
       <div>
         <select
           onChange={(e) => handleSelectTemplate((e.target.value))}
           className="bg-blue-500 text-white p-2 rounded text-sm w-full"
+          aria-label="Select a template"
         >
           <option value="">Lựa chọn Template</option>
           {templates.map((template) => (
@@ -113,7 +112,6 @@ export const TemplateSelect = () => {
           ></iframe>
         </div>
       )}
-
 
       {loading && <p>Loading...</p>}
     </div>
