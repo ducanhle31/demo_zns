@@ -1,6 +1,8 @@
 import { useState } from "react";
 import { CampaignForm } from "./CampaignForm";
 import { CampaignList } from "./CampaignList";
+import { CampaignFile } from "./CampaignFile";
+import { CampaignListFile } from "./CampaignListFile";
 
 export const Navbar = () => {
   const [activeTab, setActiveTab] = useState<string>("Thêm mới");
@@ -13,10 +15,18 @@ export const Navbar = () => {
     {
       id: "Danh sách ",
       label: " Danh sách các chiến dịch",
-      content: < CampaignList/>,
+      content: <CampaignList />,
     },
-    
- 
+    {
+      id: "Tạo tệp KH",
+      label: " Tạo tệp KH",
+      content: <CampaignFile />,
+    },
+    {
+      id: "Danh sách tệp KH",
+      label: "Danh sách tệp KH",
+      content: <CampaignListFile />,
+    },
   ];
   return (
     <div>
