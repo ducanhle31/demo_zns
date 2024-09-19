@@ -23,7 +23,7 @@ export const CampaignListFile: React.FC = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch("http://10.10.51.16:3001/api/v1/config");
+        const response = await fetch("http://localhost:3001/api/v1/config");
         if (!response.ok) {
           throw new Error("Network response was not ok");
         }

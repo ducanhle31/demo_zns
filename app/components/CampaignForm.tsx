@@ -94,7 +94,7 @@ export const CampaignForm = () => {
 
     try {
       const response = await axios.post(
-        "http://10.10.51.16:3001/api/v1/campaign",
+        "http://localhost:3001/api/v1/campaign",
         requestData
       );
       console.log("Success:", response.data);
@@ -107,9 +107,7 @@ export const CampaignForm = () => {
 
   return (
     <div className="bg-white p-8 rounded-lg shadow-lg text-black">
-      <h1 className="text-2xl font-bold mb-8 text-center">
-        Thêm mới chiến dịch Zalo
-      </h1>
+      
       <div className="flex space-x-8">
         <div className="flex-1">
           <div className="py-4">
@@ -140,13 +138,15 @@ export const CampaignForm = () => {
           </div>
 
           <div className="flex-1">
-            <div className="py-4">
+            <div className="py-4 space-x-4">
+              <label htmlFor="campaign-type" className="font-bold">Loại tin:</label>
               <select
+                id="campaign-type"
                 className="px-4 py-2 rounded bg-blue-500 text-white"
                 value={selectedOption}
                 onChange={(e) => handleButtonClick(e.target.value)}
               >
-                <option value="">Chọn gửi theo tin</option>
+                <option value="">Chọn loại tin</option>
                 <option value="ZNS">Gửi theo ZNS</option>
                 <option value="UID">Gửi theo UID</option>
               </select>
@@ -165,28 +165,16 @@ export const CampaignForm = () => {
               )}
               {selectedOption === "UID" && (
                 <>
-             
                   <div className="py-2">
-                    <CustomerSelector onSelectCustomers={setSelectedCustomers} />
+                    <CustomerSelector
+                      onSelectCustomers={setSelectedCustomers}
+                    />
                   </div>
                 </>
               )}
             </div>
           </div>
-          {sendMode !== "immediate" && (
-            <div className="py-4">
-              <label htmlFor="campaign-time" className="font-bold">
-                Thời gian gửi:
-              </label>
-              <input
-                id="campaign-time"
-                type="datetime-local"
-                value={campaign_time}
-                onChange={(e) => updateDate(e.target.value)}
-                className="border p-2 rounded w-full"
-              />
-            </div>
-          )}
+
           <div className="py-4">
             <label className="font-bold">Chế Độ Gửi:</label>
             <div>
@@ -215,6 +203,20 @@ export const CampaignForm = () => {
               </label>
             </div>
           </div>
+          {sendMode !== "immediate" && (
+            <div className="py-4">
+              <label htmlFor="campaign-time" className="font-bold">
+                Thời gian gửi:
+              </label>
+              <input
+                id="campaign-time"
+                type="datetime-local"
+                value={campaign_time}
+                onChange={(e) => updateDate(e.target.value)}
+                className="border p-2 rounded w-full"
+              />
+            </div>
+          )}
           <div className="py-4">
             <button
               onClick={handleSubmit}

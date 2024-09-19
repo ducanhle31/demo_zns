@@ -30,7 +30,7 @@ export const PhoneSelector = (props: IPhoneSelectorProps) => {
     const fetchData = async () => {
       try {
         const response = await axios.get<CampaignTemplate[]>(
-          "http://10.10.51.16:3001/api/v1/config"
+          "http://localhost:3001/api/v1/config"
         );
         setData(response.data);
       } catch (error) {
@@ -65,16 +65,16 @@ export const PhoneSelector = (props: IPhoneSelectorProps) => {
   };
 
   return (
-    <div className="p-4">
-      <div className="mb-6">
+    <div>
+      <div className="mb-6 space-x-4">
         <label htmlFor="file-select" className="font-bold mb-2">
-          Hãy lựa chọn tệp
+          Chọn tệp KH:
         </label>
         <select
           id="file-select"
           value={selectedFile}
           onChange={handleFileChange}
-          className="ml-2 p-2 border border-gray-300"
+          className=" p-2 border border-gray-300"
         >
           <option value="">Lựa chọn tệp khách hàng</option>
           {data.map((template) => (

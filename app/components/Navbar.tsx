@@ -38,7 +38,7 @@ export const Navbar = () => {
           {tabs.map((tab) => (
             <li className="me-2" key={tab.id} role="presentation">
               <button
-                className={`inline-block p-4 border-b-2 rounded-t-lg  text-md ${
+                className={`inline-block p-4 border-b-2 rounded-t-lg  text-lg font-bold ${
                   activeTab === tab.id
                     ? "text-purple-600 border-purple-600"
                     : "hover:text-gray-600 hover:border-gray-300"

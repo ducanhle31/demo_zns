@@ -38,8 +38,7 @@ export const CampaignFile = () => {
     customers: "",
     customer_name: "",
   });
-  const [selectAll, setSelectAll] = useState(false); 
-
+  const [selectAll, setSelectAll] = useState(false);
 
   const handleToggleUser = (userId: number) => {
     setSelectedUserIds((prevSelected) =>
@@ -48,7 +47,6 @@ export const CampaignFile = () => {
         : [...prevSelected, userId]
     );
   };
-
 
   const handleSelectAll = () => {
     if (selectAll) {
@@ -103,7 +101,7 @@ export const CampaignFile = () => {
     };
 
     try {
-      const response = await fetch("http://10.10.51.16:3001/api/v1/config", {
+      const response = await fetch("http://localhost:3001/api/v1/config", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
