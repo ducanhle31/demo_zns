@@ -51,6 +51,8 @@ export const CampaignForm = () => {
     const submissionDate =
       sendMode === "immediate" ? getLocalDateTime() : campaign_time;
 
+    const finalTemplateId = templateId ? templateId : "123456";
+
     const combinedCustomers = [
       ...selectedPhones.map((phone) => ({
         id: 1,
@@ -68,7 +70,6 @@ export const CampaignForm = () => {
         customer_name: "Nguyễn Thị Hoàng Anh",
         order_date: "20/03/2020",
         order_code: "PE010299485",
-        templateId: "1123",
       })),
     ];
 
@@ -77,7 +78,7 @@ export const CampaignForm = () => {
       campaign_description,
       sendMode,
       campaign_time: submissionDate,
-      templateId,
+      templateId: finalTemplateId,
       customers: combinedCustomers,
       campaign_type: campaignType,
     };
