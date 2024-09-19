@@ -94,7 +94,7 @@ export const CampaignForm = () => {
 
     try {
       const response = await axios.post(
-        "http://localhost:3001/api/v1/campaign",
+        "http://10.10.51.16:3001/api/v1/campaign",
         requestData
       );
       console.log("Success:", response.data);
@@ -107,7 +107,6 @@ export const CampaignForm = () => {
 
   return (
     <div className="bg-white p-8 rounded-lg shadow-lg text-black">
-      
       <div className="flex space-x-8">
         <div className="flex-1">
           <div className="py-4">
@@ -139,7 +138,9 @@ export const CampaignForm = () => {
 
           <div className="flex-1">
             <div className="py-4 space-x-4">
-              <label htmlFor="campaign-type" className="font-bold">Loại tin:</label>
+              <label htmlFor="campaign-type" className="font-bold">
+                Loại tin:
+              </label>
               <select
                 id="campaign-type"
                 className="px-4 py-2 rounded bg-blue-500 text-white"
