@@ -51,7 +51,7 @@ export const CampaignForm = () => {
     const submissionDate =
       sendMode === "immediate" ? getLocalDateTime() : campaign_time;
 
-    const finalTemplateId = templateId ? templateId : "123456";
+    const finalTemplateId = selectedOption === "UID" ? "123456" : templateId;
 
     const combinedCustomers = [
       ...selectedPhones.map((phone) => ({
