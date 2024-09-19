@@ -38,9 +38,9 @@ export const CampaignFile = () => {
     customers: "",
     customer_name: "",
   });
-  const [selectAll, setSelectAll] = useState(false); // State for "Select All" checkbox
+  const [selectAll, setSelectAll] = useState(false); 
 
-  // Toggle selection of a user
+
   const handleToggleUser = (userId: number) => {
     setSelectedUserIds((prevSelected) =>
       prevSelected.includes(userId)
@@ -49,7 +49,7 @@ export const CampaignFile = () => {
     );
   };
 
-  // Handle "Select All" checkbox
+
   const handleSelectAll = () => {
     if (selectAll) {
       setSelectedUserIds([]);
@@ -59,12 +59,10 @@ export const CampaignFile = () => {
     setSelectAll(!selectAll);
   };
 
-  // Handle input changes for new user
   const handleNewUserChange = (field: string, value: string) => {
     setNewUser((prev) => ({ ...prev, [field]: value }));
   };
 
-  // Add a new user to the users list
   const handleAddNewUser = () => {
     if (
       newUser.phone.trim() &&
@@ -105,7 +103,7 @@ export const CampaignFile = () => {
     };
 
     try {
-      const response = await fetch("http://localhost:3001/api/v1/config", {
+      const response = await fetch("http://10.10.51.16:3001/api/v1/config", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -178,7 +176,6 @@ export const CampaignFile = () => {
         </div>
       </div>
 
-      {/* Add New User */}
       <div className="mb-6">
         <h3 className="font-bold mb-2">Thêm khách hàng</h3>
         <div className="flex  space-x-4">
@@ -214,7 +211,6 @@ export const CampaignFile = () => {
         </div>
       </div>
 
-      {/* Submit Button */}
       <button
         onClick={handleSubmit}
         className="bg-green-500 text-white px-6 py-3 rounded-lg w-full"

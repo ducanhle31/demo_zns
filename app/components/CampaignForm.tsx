@@ -29,10 +29,10 @@ export const CampaignForm = () => {
     updateDate,
   } = useCampaign();
 
-  const [selectedOption, setSelectedOption] = useState<string | null>(null);
+  const [selectedOption, setSelectedOption] = useState<string>("");
   const [selectedPhones, setSelectedPhones] = useState<string[]>([]);
   const [selectedCustomers, setSelectedCustomers] = useState<string[]>([]);
-  const [campaignType, setCampaignType] = useState<string | null>(null);
+  const [campaignType, setCampaignType] = useState<string>("");
 
   const handleButtonClick = (option: string) => {
     setSelectedOption(option);
@@ -40,16 +40,15 @@ export const CampaignForm = () => {
   };
 
   const handleSubmit = async () => {
+    if (!campaign_name.trim()) {
+      alert("Tên chiến dịch không được để trống.");
+      return;
+    }
 
-     if (!campaign_name.trim()) {
-       alert("Tên chiến dịch không được để trống.");
-       return;
-     }
-
-     if (!campaign_description.trim()) {
-       alert("Mô tả chiến dịch không được để trống.");
-       return;
-     }
+    if (!campaign_description.trim()) {
+      alert("Mô tả chiến dịch không được để trống.");
+      return;
+    }
     const isConfirmed = window.confirm(
       "Bạn có chắc chắn muốn gửi chiến dịch này không?"
     );
@@ -142,30 +141,20 @@ export const CampaignForm = () => {
 
           <div className="flex-1">
             <div className="py-4">
-              <button
-                className={`px-4 py-2 rounded mr-2 ${
-                  selectedOption === "ZNS" ? "bg-green-500" : "bg-blue-500"
-                } text-white`}
-                onClick={() => handleButtonClick("ZNS")}
+              <select
+                className="px-4 py-2 rounded bg-blue-500 text-white"
+                value={selectedOption}
+                onChange={(e) => handleButtonClick(e.target.value)}
               >
-                Gửi theo ZNS
-              </button>
-              <button
-                className={`px-4 py-2 rounded ${
-                  selectedOption === "UID" ? "bg-green-500" : "bg-blue-500"
-                } text-white`}
-                onClick={() => handleButtonClick("UID")}
-              >
-                Gửi theo UID
-              </button>
+                <option value="">Chọn gửi theo tin</option>
+                <option value="ZNS">Gửi theo ZNS</option>
+                <option value="UID">Gửi theo UID</option>
+              </select>
             </div>
 
             <div>
               {selectedOption === "ZNS" && (
                 <>
-                  <h1 className="font-bold text-black text-md ">
-                    Gửi theo ZNS
-                  </h1>
                   <div className="py-2">
                     <PhoneSelector onSelectPhones={setSelectedPhones} />
                   </div>
@@ -176,11 +165,9 @@ export const CampaignForm = () => {
               )}
               {selectedOption === "UID" && (
                 <>
-                  <h1 className="font-bold text-black text-md ">
-                    Gửi theo UID
-                  </h1>
+             
                   <div className="py-2">
-                    <CustomerSelector onSelectCustome={setSelectedCustomers} />
+                    <CustomerSelector onSelectCustomers={setSelectedCustomers} />
                   </div>
                 </>
               )}

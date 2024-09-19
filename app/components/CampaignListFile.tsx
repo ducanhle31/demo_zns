@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import { Loading } from "./Loading";
 
-// Define TypeScript interfaces for the data structures
 interface Customer {
   id: number;
   phone: string;
@@ -21,11 +20,10 @@ export const CampaignListFile: React.FC = () => {
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
 
-  // Fetch data from the API
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch("http://localhost:3001/api/v1/config");
+        const response = await fetch("http://10.10.51.16:3001/api/v1/config");
         if (!response.ok) {
           throw new Error("Network response was not ok");
         }
@@ -88,7 +86,6 @@ export const CampaignListFile: React.FC = () => {
                 >
                   {template.file_description}
                 </td>
-                {/* Render the first customer row */}
                 <td className="border border-gray-300 p-2">
                   {template.customers[0].id}
                 </td>
@@ -99,7 +96,6 @@ export const CampaignListFile: React.FC = () => {
                   {template.customers[0].phone}
                 </td>
               </tr>
-              {/* Render remaining customer rows */}
               {template.customers.slice(1).map((customer) => (
                 <tr key={customer.id}>
                   <td className="border border-gray-300 p-2">{customer.id}</td>

@@ -80,10 +80,10 @@ export const TemplateSelect = () => {
 
   return (
     <div>
-      <div>
+      <div className="mb-4">
         <select
           onChange={(e) => handleSelectTemplate((e.target.value))}
-          className="bg-blue-500 text-white p-2 rounded text-sm w-full"
+          className="bg-blue-500 text-white p-2 rounded text-sm "
           aria-label="Select a template"
         >
           <option value="">Lựa chọn Template</option>
