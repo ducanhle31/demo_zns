@@ -40,6 +40,16 @@ export const CampaignForm = () => {
   };
 
   const handleSubmit = async () => {
+
+     if (!campaign_name.trim()) {
+       alert("Tên chiến dịch không được để trống.");
+       return;
+     }
+
+     if (!campaign_description.trim()) {
+       alert("Mô tả chiến dịch không được để trống.");
+       return;
+     }
     const isConfirmed = window.confirm(
       "Bạn có chắc chắn muốn gửi chiến dịch này không?"
     );
@@ -130,6 +140,66 @@ export const CampaignForm = () => {
             />
           </div>
 
+          <div className="flex-1">
+            <div className="py-4">
+              <button
+                className={`px-4 py-2 rounded mr-2 ${
+                  selectedOption === "ZNS" ? "bg-green-500" : "bg-blue-500"
+                } text-white`}
+                onClick={() => handleButtonClick("ZNS")}
+              >
+                Gửi theo ZNS
+              </button>
+              <button
+                className={`px-4 py-2 rounded ${
+                  selectedOption === "UID" ? "bg-green-500" : "bg-blue-500"
+                } text-white`}
+                onClick={() => handleButtonClick("UID")}
+              >
+                Gửi theo UID
+              </button>
+            </div>
+
+            <div>
+              {selectedOption === "ZNS" && (
+                <>
+                  <h1 className="font-bold text-black text-md ">
+                    Gửi theo ZNS
+                  </h1>
+                  <div className="py-2">
+                    <PhoneSelector onSelectPhones={setSelectedPhones} />
+                  </div>
+                  <div className="py-4">
+                    <TemplateSelect />
+                  </div>
+                </>
+              )}
+              {selectedOption === "UID" && (
+                <>
+                  <h1 className="font-bold text-black text-md ">
+                    Gửi theo UID
+                  </h1>
+                  <div className="py-2">
+                    <CustomerSelector onSelectCustome={setSelectedCustomers} />
+                  </div>
+                </>
+              )}
+            </div>
+          </div>
+          {sendMode !== "immediate" && (
+            <div className="py-4">
+              <label htmlFor="campaign-time" className="font-bold">
+                Thời gian gửi:
+              </label>
+              <input
+                id="campaign-time"
+                type="datetime-local"
+                value={campaign_time}
+                onChange={(e) => updateDate(e.target.value)}
+                className="border p-2 rounded w-full"
+              />
+            </div>
+          )}
           <div className="py-4">
             <label className="font-bold">Chế Độ Gửi:</label>
             <div>
@@ -158,22 +228,6 @@ export const CampaignForm = () => {
               </label>
             </div>
           </div>
-
-          {sendMode !== "immediate" && (
-            <div className="py-4">
-              <label htmlFor="campaign-time" className="font-bold">
-                Thời gian gửi:
-              </label>
-              <input
-                id="campaign-time"
-                type="datetime-local"
-                value={campaign_time}
-                onChange={(e) => updateDate(e.target.value)}
-                className="border p-2 rounded w-full"
-              />
-            </div>
-          )}
-
           <div className="py-4">
             <button
               onClick={handleSubmit}
@@ -181,52 +235,6 @@ export const CampaignForm = () => {
             >
               Gửi Chiến Dịch
             </button>
-          </div>
-        </div>
-        <div className="flex-1">
-          <div className="py-4">
-            <button
-              className={`px-4 py-2 rounded mr-2 ${
-                selectedOption === "ZNS" ? "bg-green-500" : "bg-blue-500"
-              } text-white`}
-              onClick={() => handleButtonClick("ZNS")}
-            >
-              Gửi theo ZNS
-            </button>
-            <button
-              className={`px-4 py-2 rounded ${
-                selectedOption === "UID" ? "bg-green-500" : "bg-blue-500"
-              } text-white`}
-              onClick={() => handleButtonClick("UID")}
-            >
-              Gửi theo UID
-            </button>
-          </div>
-
-          <div>
-            {selectedOption === "ZNS" && (
-              <>
-                <h1 className="font-bold text-black text-md text-center">
-                  Gửi theo ZNS
-                </h1>
-                <div className="py-2">
-                  <PhoneSelector onSelectPhones={setSelectedPhones} />
-                </div>
-                <div className="py-4">
-                  <TemplateSelect />
-                </div>
-              </>
-            )}
-            {selectedOption === "UID" && (
-              <>
-                <h1 className="font-bold text-black text-md text-center">
-                  Gửi theo UID
-                </h1>
-                <div className="py-2">
-                  <CustomerSelector onSelectCustome={setSelectedCustomers} />
-                </div>
-              </>
-            )}
           </div>
         </div>
       </div>
