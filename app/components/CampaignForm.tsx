@@ -29,10 +29,10 @@ export const CampaignForm = () => {
     updateDate,
   } = useCampaign();
 
-  const [selectedOption, setSelectedOption] = useState<string | null>(null);
+  const [selectedOption, setSelectedOption] = useState<string>("");
   const [selectedPhones, setSelectedPhones] = useState<string[]>([]);
   const [selectedCustomers, setSelectedCustomers] = useState<string[]>([]);
-  const [campaignType, setCampaignType] = useState<string | null>(null);
+  const [campaignType, setCampaignType] = useState<string>("");
 
   const handleButtonClick = (option: string) => {
     setSelectedOption(option);
@@ -40,6 +40,15 @@ export const CampaignForm = () => {
   };
 
   const handleSubmit = async () => {
+    if (!campaign_name.trim()) {
+      alert("Tên chiến dịch không được để trống.");
+      return;
+    }
+
+    if (!campaign_description.trim()) {
+      alert("Mô tả chiến dịch không được để trống.");
+      return;
+    }
     const isConfirmed = window.confirm(
       "Bạn có chắc chắn muốn gửi chiến dịch này không?"
     );
@@ -50,6 +59,8 @@ export const CampaignForm = () => {
 
     const submissionDate =
       sendMode === "immediate" ? getLocalDateTime() : campaign_time;
+
+    const finalTemplateId = selectedOption === "UID" ? "123456" : templateId;
 
     const combinedCustomers = [
       ...selectedPhones.map((phone) => ({
@@ -68,7 +79,6 @@ export const CampaignForm = () => {
         customer_name: "Nguyễn Thị Hoàng Anh",
         order_date: "20/03/2020",
         order_code: "PE010299485",
-        templateId: "1123",
       })),
     ];
 
@@ -77,14 +87,14 @@ export const CampaignForm = () => {
       campaign_description,
       sendMode,
       campaign_time: submissionDate,
-      templateId,
+      templateId: finalTemplateId,
       customers: combinedCustomers,
       campaign_type: campaignType,
     };
 
     try {
       const response = await axios.post(
-        "http://localhost:3001/api/v1/campaign",
+        "http://10.10.51.16:3001/api/v1/campaign",
         requestData
       );
       console.log("Success:", response.data);
@@ -97,9 +107,6 @@ export const CampaignForm = () => {
 
   return (
     <div className="bg-white p-8 rounded-lg shadow-lg text-black">
-      <h1 className="text-2xl font-bold mb-8 text-center">
-        Thêm mới chiến dịch Zalo
-      </h1>
       <div className="flex space-x-8">
         <div className="flex-1">
           <div className="py-4">
@@ -127,6 +134,46 @@ export const CampaignForm = () => {
               placeholder="Mô tả chiến dịch"
               className="border p-2 rounded w-full"
             />
+          </div>
+
+          <div className="flex-1">
+            <div className="py-4 space-x-4">
+              <label htmlFor="campaign-type" className="font-bold">
+                Loại tin:
+              </label>
+              <select
+                id="campaign-type"
+                className="px-4 py-2 rounded bg-blue-500 text-white"
+                value={selectedOption}
+                onChange={(e) => handleButtonClick(e.target.value)}
+              >
+                <option value="">Chọn loại tin</option>
+                <option value="ZNS">Gửi theo ZNS</option>
+                <option value="UID">Gửi theo UID</option>
+              </select>
+            </div>
+
+            <div>
+              {selectedOption === "ZNS" && (
+                <>
+                  <div className="py-2">
+                    <PhoneSelector onSelectPhones={setSelectedPhones} />
+                  </div>
+                  <div className="py-4">
+                    <TemplateSelect />
+                  </div>
+                </>
+              )}
+              {selectedOption === "UID" && (
+                <>
+                  <div className="py-2">
+                    <CustomerSelector
+                      onSelectCustomers={setSelectedCustomers}
+                    />
+                  </div>
+                </>
+              )}
+            </div>
           </div>
 
           <div className="py-4">
@@ -157,7 +204,6 @@ export const CampaignForm = () => {
               </label>
             </div>
           </div>
-
           {sendMode !== "immediate" && (
             <div className="py-4">
               <label htmlFor="campaign-time" className="font-bold">
@@ -172,7 +218,6 @@ export const CampaignForm = () => {
               />
             </div>
           )}
-
           <div className="py-4">
             <button
               onClick={handleSubmit}
@@ -180,52 +225,6 @@ export const CampaignForm = () => {
             >
               Gửi Chiến Dịch
             </button>
-          </div>
-        </div>
-        <div className="flex-1">
-          <div className="py-4">
-            <button
-              className={`px-4 py-2 rounded mr-2 ${
-                selectedOption === "ZNS" ? "bg-green-500" : "bg-blue-500"
-              } text-white`}
-              onClick={() => handleButtonClick("ZNS")}
-            >
-              Gửi theo ZNS
-            </button>
-            <button
-              className={`px-4 py-2 rounded ${
-                selectedOption === "UID" ? "bg-green-500" : "bg-blue-500"
-              } text-white`}
-              onClick={() => handleButtonClick("UID")}
-            >
-              Gửi theo UID
-            </button>
-          </div>
-
-          <div>
-            {selectedOption === "ZNS" && (
-              <>
-                <h1 className="font-bold text-black text-md text-center">
-                  Gửi theo ZNS
-                </h1>
-                <div className="py-2">
-                  <PhoneSelector onSelectPhones={setSelectedPhones} />
-                </div>
-                <div className="py-4">
-                  <TemplateSelect />
-                </div>
-              </>
-            )}
-            {selectedOption === "UID" && (
-              <>
-                <h1 className="font-bold text-black text-md text-center">
-                  Gửi theo UID
-                </h1>
-                <div className="py-2">
-                  <CustomerSelector onSelectCustome={setSelectedCustomers} />
-                </div>
-              </>
-            )}
           </div>
         </div>
       </div>

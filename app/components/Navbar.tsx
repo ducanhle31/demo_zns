@@ -1,6 +1,8 @@
 import { useState } from "react";
 import { CampaignForm } from "./CampaignForm";
 import { CampaignList } from "./CampaignList";
+import { CampaignFile } from "./CampaignFile";
+import { CampaignListFile } from "./CampaignListFile";
 
 export const Navbar = () => {
   const [activeTab, setActiveTab] = useState<string>("Thêm mới");
@@ -13,10 +15,18 @@ export const Navbar = () => {
     {
       id: "Danh sách ",
       label: " Danh sách các chiến dịch",
-      content: < CampaignList/>,
+      content: <CampaignList />,
     },
-    
- 
+    {
+      id: "Tạo tệp KH",
+      label: " Tạo tệp KH",
+      content: <CampaignFile />,
+    },
+    {
+      id: "Danh sách tệp KH",
+      label: "Danh sách tệp KH",
+      content: <CampaignListFile />,
+    },
   ];
   return (
     <div>
@@ -28,7 +38,7 @@ export const Navbar = () => {
           {tabs.map((tab) => (
             <li className="me-2" key={tab.id} role="presentation">
               <button
-                className={`inline-block p-4 border-b-2 rounded-t-lg  text-md ${
+                className={`inline-block p-4 border-b-2 rounded-t-lg  text-lg font-bold ${
                   activeTab === tab.id
                     ? "text-purple-600 border-purple-600"
                     : "hover:text-gray-600 hover:border-gray-300"

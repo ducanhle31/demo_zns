@@ -1,105 +1,92 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect } from "react";
+import axios from "axios";
 
-interface CustomerData {
-  id: number;
-  phone: string;
+interface Customer {
   customers: string;
-  order_code: string;
 }
 
-const initialData: CustomerData[] = [
-  { id: 1, phone: "84344480909", customers: "2559231188943244647", order_code: "PE010299485", },
-  { id: 2, phone: "84985614219", customers: "3273752948166242705", order_code: "PE010299485",  }
-];
-
-interface CustomeSelectorProps {
-  onSelectCustome: (customers: string[]) => void;
+interface CampaignTemplate {
+  file_name: string;
+  file_description: string;
+  file_id: string;
+  customers: Customer[];
 }
 
-export const CustomerSelector = ({ onSelectCustome }: CustomeSelectorProps) => {
-  const [data] = useState(initialData);
-  const [selectedIds, setSelectedIds] = useState<number[]>([]);
-  
+interface ICustomerSelectorProps {
+  onSelectCustomers: (customers: string[]) => void;
+}
+
+export const CustomerSelector = (props: ICustomerSelectorProps) => {
+  const { onSelectCustomers } = props;
+  const [data, setData] = useState<CampaignTemplate[]>([]);
+  const [selectedCustomers, setSelectedCustomers] = useState<string[]>([]);
+  const [selectedFile, setSelectedFile] = useState<string>("");
+  const [selectedFileName, setSelectedFileName] = useState<string>("");
+
   useEffect(() => {
-    const selectedCustomers = data
-      .filter((item) => selectedIds.includes(item.id))
-      .map((item) => item.customers);
-    onSelectCustome(selectedCustomers);
-  }, [selectedIds, data, onSelectCustome]);
+    const fetchData = async () => {
+      try {
+        const response = await axios.get<CampaignTemplate[]>(
+          "http://10.10.51.16:3001/api/v1/config"
+        );
+        setData(response.data);
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    };
 
-  const handleSelectCustomer = (id: number) => {
-    setSelectedIds((prev) =>
-      prev.includes(id) ? prev.filter((item) => item !== id) : [...prev, id]
+    fetchData();
+  }, []);
+
+  useEffect(() => {
+    onSelectCustomers(selectedCustomers);
+  }, [selectedCustomers, onSelectCustomers]);
+
+  const handleFileChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+    const fileId = event.target.value;
+    setSelectedFile(fileId);
+
+    const currentTemplate = data.find(
+      (template) => template.file_id === fileId
     );
-  };
-
-  const handleSelectAll = () => {
-    if (selectedIds.length === data.length) {
-      setSelectedIds([]);
+    if (currentTemplate) {
+      const allCustomerNames = currentTemplate.customers.map(
+        (customer) => customer.customers
+      );
+      setSelectedCustomers(allCustomerNames);
+      setSelectedFileName(currentTemplate.file_name);
     } else {
-      setSelectedIds(data.map((item) => item.id));
+      setSelectedCustomers([]);
+      setSelectedFileName("");
     }
   };
 
-  const handleDeselectAll = () => {
-    setSelectedIds([]);
-  };
-
   return (
-    <div className="p-4">
-      <h1 className="text-xl font-bold mb-4">Chọn khách hàng</h1>
-
-      <div className="mb-2">
-        <label className="flex items-center">
-          <input
-            type="checkbox"
-            checked={selectedIds.length === data.length}
-            onChange={handleSelectAll}
-            className="mr-2"
-          />
-          Chọn tất cả
+    <div>
+      <div className="mb-6 space-x-4">
+        <label htmlFor="file-select" className="font-bold mb-2">
+          Chọn tệp KH:
         </label>
-      </div>
-
-      <div>
-        {data.map((item) => (
-          <div key={item.id} className="mb-2">
-            <label className="flex items-center">
-              <input
-                type="checkbox"
-                checked={selectedIds.includes(item.id)}
-                onChange={() => handleSelectCustomer(item.id)}
-                className="mr-2"
-              />
-              {item.customers}
-            </label>
-          </div>
-        ))}
-      </div>
-
-      <div className="mt-4">
-        <h2 className="text-lg font-semibold">Khách hàng đã chọn:</h2>
-        {selectedIds.length > 0 ? (
-          <ul>
-            {data
-              .filter((item) => selectedIds.includes(item.id))
-              .map((item) => (
-                <li key={item.id}>{item.customers}</li>
-              ))}
-          </ul>
-        ) : (
-          <p>Chưa có khách hàng nào được chọn.</p>
-        )}
-      </div>
-
-      <div className="mb-4">
-        <button
-          onClick={handleDeselectAll}
-          className="bg-red-500 text-white px-4 py-2 rounded text-sm"
+        <select
+          id="file-select"
+          value={selectedFile}
+          onChange={handleFileChange}
+          className="p-2 border border-gray-300"
         >
-          Bỏ chọn tất cả
-        </button>
+          <option value="">Lựa chọn tệp khách hàng</option>
+          {data.map((template) => (
+            <option key={template.file_id} value={template.file_id}>
+              {template.file_name}
+            </option>
+          ))}
+        </select>
       </div>
+      {selectedFileName && (
+        <div className="mt-4 ">
+          Tệp khách hàng đã chọn:
+          <span className=" p-2 rounded font-bold">{selectedFileName}</span>
+        </div>
+      )}
     </div>
   );
 };
