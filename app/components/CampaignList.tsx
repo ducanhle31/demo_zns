@@ -10,7 +10,7 @@ export const CampaignList = () => {
     return <Loading />;
   }
 
-  const filteredTemplates = templates.filter(template =>
+  const filteredTemplates = templates.filter((template) =>
     template.campaign_id.toString().includes(searchTerm)
   );
 
@@ -33,13 +33,17 @@ export const CampaignList = () => {
             <th className="border border-gray-300 p-2">Mô tả</th>
             <th className="border border-gray-300 p-2">Thời gian</th>
             <th className="border border-gray-300 p-2">Loại tin gửi</th>
+            <th className="border border-gray-300 p-2">Chế độ gửi</th>
             <th className="border border-gray-300 p-2">Số tin đã gửi</th>
-            <th className="border border-gray-300 p-2">Trạng thái gửi</th>
+            <th className="border border-gray-300 p-2">
+              Trạng thái chiến dịch
+            </th>
           </tr>
         </thead>
         <tbody>
           {filteredTemplates.map((template) => {
             const status = template.status || "undefined";
+            const mode = template.sendMode || "";
             return (
               <tr key={template.campaign_id}>
                 <td className="border border-gray-300 p-2">
@@ -56,6 +60,9 @@ export const CampaignList = () => {
                 </td>
                 <td className="border border-gray-300 p-2">
                   {template.campaign_type}
+                </td>
+                <td className="border border-gray-300 p-2">
+                  {mode === "auto" ? "Tự động" : "Gửi Ngay"}
                 </td>
                 <td className="border border-gray-300 p-2">
                   {template.total_successful_requests}

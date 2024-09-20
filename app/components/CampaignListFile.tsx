@@ -61,6 +61,7 @@ export const CampaignListFile: React.FC = () => {
             <th className="border border-gray-300 p-2">Customer ID</th>
             <th className="border border-gray-300 p-2">Customer Name</th>
             <th className="border border-gray-300 p-2">Phone</th>
+            <th className="border border-gray-300 p-2">UID</th>
           </tr>
         </thead>
         <tbody>
@@ -95,6 +96,9 @@ export const CampaignListFile: React.FC = () => {
                 <td className="border border-gray-300 p-2">
                   {template.customers[0].phone}
                 </td>
+                <td className="border border-gray-300 p-2">
+                  {template.customers[0].customers}
+                </td>
               </tr>
               {template.customers.slice(1).map((customer) => (
                 <tr key={customer.id}>
@@ -104,6 +108,9 @@ export const CampaignListFile: React.FC = () => {
                   </td>
                   <td className="border border-gray-300 p-2">
                     {customer.phone}
+                  </td>
+                  <td className="border border-gray-300 p-2">
+                    {customer.customers}
                   </td>
                 </tr>
               ))}
