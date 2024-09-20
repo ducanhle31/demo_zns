@@ -4,6 +4,7 @@ import { useCampaign } from "../hook/useCampaign";
 import CustomerSelector from "./customersData";
 import axios from "axios";
 import PhoneSelector from "./PhoneSelector ";
+import { ZaloAuthButton } from "./ZaloAuthButton";
 
 const getLocalDateTime = () => {
   const now = new Date();
@@ -227,6 +228,7 @@ export const CampaignForm = () => {
               Gửi Chiến Dịch
             </button>
           </div>
+          <ZaloAuthButton />
         </div>
       </div>
     </div>
