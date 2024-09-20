@@ -1,7 +1,7 @@
 "use client";
 import React, { useState, useEffect } from "react";
 import { useDispatch } from "react-redux";
-import { setTemplateId } from "../redux/campaign.Slice"; 
+import { setTemplateId } from "../redux/campaign.Slice";
 import { fetchTemplates, fetchTemplateInfo } from "../api/templateApi";
 
 interface Template {
@@ -25,18 +25,18 @@ export const TemplateSelect = () => {
   const [selectedTemplate, setSelectedTemplate] = useState<TemplateInfo | null>(
     null
   );
-  const [loading, setLoading] = useState(false); 
-  const [page,] = useState(0); 
-  const [, setHasMore] = useState(true); 
+  const [loading, setLoading] = useState(false);
+  const [page,] = useState(0);
+  const [, setHasMore] = useState(true);
   const dispatch = useDispatch();
   const templatesPerPage = 50;
 
   const fetchTemplatesWithPagination = async (offset: number) => {
-    setLoading(true); 
+    setLoading(true);
     try {
-      const response = await fetchTemplates(offset); 
+      const response = await fetchTemplates(offset);
       if (response.data.length < templatesPerPage) {
-        setHasMore(false); 
+        setHasMore(false);
       }
 
       setTemplates((prevTemplates) => {
@@ -53,41 +53,43 @@ export const TemplateSelect = () => {
     } catch (error) {
       console.error("Error fetching templates:", error);
     }
-    setLoading(false); 
+    setLoading(false);
   };
 
   const fetchTemplateInfoById = async (templateId: string) => {
     try {
-      const response = await fetchTemplateInfo(templateId); 
-      return response.data; 
+      const response = await fetchTemplateInfo(templateId);
+      return response.data;
     } catch (error) {
       console.error("Error fetching template info:", error);
     }
-    return null; 
+    return null;
   };
 
   useEffect(() => {
-    fetchTemplatesWithPagination(page * templatesPerPage); 
+    fetchTemplatesWithPagination(page * templatesPerPage);
   }, [page]);
 
   const handleSelectTemplate = async (templateId: string) => {
     const templateInfo = await fetchTemplateInfoById(templateId);
     if (templateInfo) {
-      setSelectedTemplate(templateInfo); 
-      dispatch(setTemplateId(templateId)); 
+      setSelectedTemplate(templateInfo);
+      dispatch(setTemplateId(templateId));
     }
   };
 
   return (
     <div>
-      <div className="mb-4 space-x-4">
-      <label htmlFor="campaign-type" className="font-bold">Chọn TEMPLATE:</label>
+      <div className="mb-2 space-x-4">
+        <label htmlFor="campaign-type" className="font-bold">
+          Chọn TEMPLATE:
+        </label>
         <select
-          onChange={(e) => handleSelectTemplate((e.target.value))}
-          className="bg-blue-400 text-white p-2 rounded text-sm "
+          onChange={(e) => handleSelectTemplate(e.target.value)}
+          className="border border-gray-300 p-2 rounded  "
           aria-label="Select a template"
         >
-          <option value="">Lựa chọn Template</option>
+          <option value="">Chọn Template</option>
           {templates.map((template) => (
             <option key={template.templateId} value={template.templateId}>
               {template.templateName}

@@ -66,7 +66,7 @@ export const PhoneSelector = (props: IPhoneSelectorProps) => {
 
   return (
     <div>
-      <div className="mb-6 space-x-4">
+      <div className="mb-2 space-x-4">
         <label htmlFor="file-select" className="font-bold mb-2">
           Chọn tệp KH:
         </label>
@@ -88,7 +88,7 @@ export const PhoneSelector = (props: IPhoneSelectorProps) => {
       {selectedFileName && (
         <div className="mt-4 ">
           Tệp khách hàng đã chọn:
-          <span className="border border-gray-300 p-2 rounded font-bold">
+          <span className="p-2 font-bold">
             {selectedFileName}
           </span>
         </div>

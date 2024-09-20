@@ -63,7 +63,7 @@ export const CustomerSelector = (props: ICustomerSelectorProps) => {
 
   return (
     <div>
-      <div className="mb-6 space-x-4">
+      <div className="mb-2 space-x-4">
         <label htmlFor="file-select" className="font-bold mb-2">
           Chọn tệp KH:
         </label>

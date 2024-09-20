@@ -211,9 +211,9 @@ export const CampaignFile = () => {
 
       <button
         onClick={handleSubmit}
-        className="bg-green-500 text-white px-6 py-3 rounded-lg w-full"
+        className="bg-green-500 text-white px-6 py-3 rounded-lg font-bold"
       >
-        Submit
+      Tạo tệp
       </button>
     </div>
   );

@@ -143,7 +143,7 @@ export const CampaignForm = () => {
               </label>
               <select
                 id="campaign-type"
-                className="px-4 py-2 rounded bg-blue-500 text-white"
+                className="px-4 py-2 rounded  border border-gray-300"
                 value={selectedOption}
                 onChange={(e) => handleButtonClick(e.target.value)}
               >
@@ -205,23 +205,24 @@ export const CampaignForm = () => {
             </div>
           </div>
           {sendMode !== "immediate" && (
-            <div className="py-4">
+            <div className="py-2 space-x-4">
               <label htmlFor="campaign-time" className="font-bold">
                 Thời gian gửi:
               </label>
+
               <input
                 id="campaign-time"
                 type="datetime-local"
                 value={campaign_time}
                 onChange={(e) => updateDate(e.target.value)}
-                className="border p-2 rounded w-full"
+                className="border p-2 rounded "
               />
             </div>
           )}
           <div className="py-4">
             <button
               onClick={handleSubmit}
-              className="bg-blue-500 text-white p-2 rounded text-sm"
+              className="bg-blue-500 text-white p-2 rounded "
             >
               Gửi Chiến Dịch
             </button>
