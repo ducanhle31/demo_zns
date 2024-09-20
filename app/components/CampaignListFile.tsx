@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Loading } from "./Loading";
 
 interface Customer {
@@ -23,7 +23,7 @@ export const CampaignListFile: React.FC = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch("http://10.10.51.16:3001/api/v1/config");
+        const response = await fetch("http://localhost:3001/api/v1/config");
         if (!response.ok) {
           throw new Error("Network response was not ok");
         }
@@ -66,9 +66,9 @@ export const CampaignListFile: React.FC = () => {
         </thead>
         <tbody>
           {templates.map((template) => (
-            <>
+            <React.Fragment key={template.file_id}>
               {/* Render file details row */}
-              <tr key={template.file_id}>
+              <tr>
                 <td
                   rowSpan={template.customers.length}
                   className="border border-gray-300 p-2"
@@ -114,7 +114,7 @@ export const CampaignListFile: React.FC = () => {
                   </td>
                 </tr>
               ))}
-            </>
+            </React.Fragment>
           ))}
         </tbody>
       </table>

@@ -94,7 +94,7 @@ export const CampaignForm = () => {
 
     try {
       const response = await axios.post(
-        "http://10.10.51.16:3001/api/v1/campaign",
+        "http://localhost:3001/api/v1/campaign",
         requestData
       );
       console.log("Success:", response.data);

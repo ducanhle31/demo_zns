@@ -52,7 +52,7 @@ export const Navbar = () => {
                 {tab.label}
               </button>
             </li>
-          ))}
+          ))}{" "}
         </ul>
       </div>
 

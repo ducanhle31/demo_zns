@@ -30,7 +30,7 @@ export const PhoneSelector = (props: IPhoneSelectorProps) => {
     const fetchData = async () => {
       try {
         const response = await axios.get<CampaignTemplate[]>(
-          "http://10.10.51.16:3001/api/v1/config"
+          "http://localhost:3001/api/v1/config"
         );
         setData(response.data);
       } catch (error) {
@@ -88,9 +88,7 @@ export const PhoneSelector = (props: IPhoneSelectorProps) => {
       {selectedFileName && (
         <div className="mt-4 ">
           Tệp khách hàng đã chọn:
-          <span className="p-2 font-bold">
-            {selectedFileName}
-          </span>
+          <span className="p-2 font-bold">{selectedFileName}</span>
         </div>
       )}
     </div>

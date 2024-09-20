@@ -1,7 +1,7 @@
 import axios from "axios";
 import { useState, useEffect } from "react";
 
-const ApiUrl = "http://10.10.51.16:3001/api/v1/campaign";
+const ApiUrl = "http://localhost:3001/api/v1/campaign";
 
 interface ICampaign {
   campaign_id: string;
