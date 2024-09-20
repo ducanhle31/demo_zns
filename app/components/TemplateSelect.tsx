@@ -3,6 +3,7 @@ import React, { useState, useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { setTemplateId } from "../redux/campaign.Slice"; 
 import { fetchTemplates, fetchTemplateInfo } from "../api/templateApi";
+import { Loading } from "./Loading";
 
 interface Template {
   templateId: string;
@@ -114,7 +115,7 @@ export const TemplateSelect = () => {
         </div>
       )}
 
-      {loading && <p>Loading...</p>}
+      {loading && <Loading/>}
     </div>
   );
 };

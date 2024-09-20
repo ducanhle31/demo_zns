@@ -84,7 +84,9 @@ export const CustomerSelector = (props: ICustomerSelectorProps) => {
       {selectedFileName && (
         <div className="mt-4 ">
           Tệp khách hàng đã chọn:
-          <span className=" p-2 rounded font-bold">{selectedFileName}</span>
+          <span className="border border-gray-300 p-2 rounded font-bold">
+            {selectedFileName}
+          </span>
         </div>
       )}
     </div>

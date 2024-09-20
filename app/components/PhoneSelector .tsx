@@ -65,16 +65,16 @@ export const PhoneSelector = (props: IPhoneSelectorProps) => {
   };
 
   return (
-    <div>
-      <div className="mb-6 space-x-4">
+    <div className="p-4">
+      <div className="mb-6">
         <label htmlFor="file-select" className="font-bold mb-2">
-          Chọn tệp KH:
+        Chọn tệp KH:
         </label>
         <select
           id="file-select"
           value={selectedFile}
           onChange={handleFileChange}
-          className=" p-2 border border-gray-300"
+          className="ml-2 p-2 border border-gray-300"
         >
           <option value="">Lựa chọn tệp khách hàng</option>
           {data.map((template) => (

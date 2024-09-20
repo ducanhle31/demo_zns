@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { Loading } from "./Loading";
+import React from "react";
 
 interface Customer {
   id: number;
@@ -19,6 +20,7 @@ export const CampaignListFile: React.FC = () => {
   const [templates, setTemplates] = useState<CampaignTemplate[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
+  const [searchTerm, ] = useState("");
 
   useEffect(() => {
     const fetchData = async () => {
@@ -50,6 +52,9 @@ export const CampaignListFile: React.FC = () => {
     return <div className="text-red-500">Error: {error}</div>;
   }
 
+  const filteredTemplates = templates.filter(template =>
+    template.file_id.toString().includes(searchTerm)
+  );
   return (
     <div className="bg-white p-8 rounded-lg shadow-lg text-black">
       <table className="table-auto w-full border-collapse border border-gray-300">
@@ -64,9 +69,8 @@ export const CampaignListFile: React.FC = () => {
           </tr>
         </thead>
         <tbody>
-          {templates.map((template) => (
-            <>
-              {/* Render file details row */}
+          {filteredTemplates.map((template) => (
+            <React.Fragment key={template.file_id}>
               <tr key={template.file_id}>
                 <td
                   rowSpan={template.customers.length}
@@ -107,7 +111,7 @@ export const CampaignListFile: React.FC = () => {
                   </td>
                 </tr>
               ))}
-            </>
+            </React.Fragment>
           ))}
         </tbody>
       </table>
