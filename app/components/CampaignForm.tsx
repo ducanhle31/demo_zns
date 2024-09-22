@@ -1,10 +1,9 @@
-import React, { useState } from "react";
-import { TemplateSelect } from "./TemplateSelect";
+import axios from "axios";
+import { useState } from "react";
 import { useCampaign } from "../hook/useCampaign";
 import CustomerSelector from "./customersData";
-import axios from "axios";
 import PhoneSelector from "./PhoneSelector ";
-import { ZaloAuthButton } from "./ZaloAuthButton";
+import { TemplateSelect } from "./TemplateSelect";
 
 const getLocalDateTime = () => {
   const now = new Date();
@@ -228,7 +227,6 @@ export const CampaignForm = () => {
               Gửi Chiến Dịch
             </button>
           </div>
-          <ZaloAuthButton />
         </div>
       </div>
     </div>
