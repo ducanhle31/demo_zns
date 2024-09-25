@@ -4,27 +4,21 @@ import { useState } from "react";
 const initialFakeUsers = [
   {
     id: 1,
-    phone: "84344480909",
-    customers: "2559231188943244647",
-    customer_name: "Nguyễn Thị Hoàng Anh",
+    phone: "0985614219",
+    customers: "3273752948166242705",
+    customer_name: "Nguyễn Tiến Đạt",
   },
   {
     id: 2,
-    phone: "84376022820",
-    customers: "4398",
-    customer_name: "Nguyễn Văn A",
+    phone: "0985656905",
+    customers: "6586590075778253207",
+    customer_name: "Lê Minh",
   },
   {
     id: 3,
-    phone: "84312345678",
-    customers: "12345",
-    customer_name: "Trần Thị B",
-  },
-  {
-    id: 4,
-    phone: "84398765432",
-    customers: "54321",
-    customer_name: "Lê Hoàng C",
+    phone: "0344480909",
+    customers: "8060438868895809827",
+    customer_name: "Đức Anh",
   },
 ];
 
@@ -76,6 +70,14 @@ export const CampaignFile = () => {
     }
   };
 
+  // Hàm chuyển đổi sdt
+  const formatPhoneNumber = (phone: string) => {
+    if (phone.startsWith("0")) {
+      return "84" + phone.slice(1);
+    }
+    return phone;
+  };
+
   // Handle form submission
   const handleSubmit = async () => {
     // Validate file name and description
@@ -89,9 +91,13 @@ export const CampaignFile = () => {
       return;
     }
 
-    const selectedUsers = users.filter((user) =>
-      selectedUserIds.includes(user.id)
-    );
+    // Chuyển đổi sdt khi gửi lên backend
+    const selectedUsers = users
+      .filter((user) => selectedUserIds.includes(user.id))
+      .map((user) => ({
+        ...user,
+        phone: formatPhoneNumber(user.phone), // Format phone number
+      }));
 
     const data = {
       file_name: fileName,
@@ -179,7 +185,7 @@ export const CampaignFile = () => {
 
       <div className="mb-6">
         <h3 className="font-bold mb-2">Thêm khách hàng</h3>
-        <div className="flex  space-x-4">
+        <div className="flex space-x-4">
           <input
             type="text"
             placeholder="Tên"
@@ -196,13 +202,13 @@ export const CampaignFile = () => {
             onChange={(e) => handleNewUserChange("phone", e.target.value)}
             className="p-2 border border-gray-300 rounded-lg"
           />
-          <input
+          {/* <input
             type="text"
             placeholder="UID"
             value={newUser.customers}
             onChange={(e) => handleNewUserChange("customers", e.target.value)}
             className="p-2 border border-gray-300 rounded-lg"
-          />
+          /> */}
           <button
             onClick={handleAddNewUser}
             className="bg-blue-500 text-white px-4 py-2 rounded-lg"
