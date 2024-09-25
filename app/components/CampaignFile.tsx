@@ -176,7 +176,8 @@ export const CampaignFile = () => {
                 className="mr-2"
               />
               <span>
-                {user.customer_name} - {user.phone} - {user.customers}
+                {user.customer_name} - {user.phone}{" "}
+                {user.customers ? `- ${user.customers}` : ""}
               </span>
             </label>
           ))}
