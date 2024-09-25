@@ -58,7 +58,7 @@ export const CampaignFile = () => {
   const handleAddNewUser = () => {
     if (
       newUser.phone.trim() &&
-      newUser.customers.trim() &&
+      // newUser.customers.trim() &&
       newUser.customer_name.trim()
     ) {
       const nextId =
