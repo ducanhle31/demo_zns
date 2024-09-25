@@ -1,7 +1,7 @@
 //customerApi.tsx
 import axios from "axios";
 
-const apiUrl = "http://10.10.51.16:3001/api/v1/uidoa";
+const apiUrl = "https://zaloapp.ongdev.online/api/v1/uidoa";
 
 export const fetchCustomers = async (offset: number) => {
   try {

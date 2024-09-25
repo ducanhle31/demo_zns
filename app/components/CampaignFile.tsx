@@ -101,13 +101,16 @@ export const CampaignFile = () => {
     };
 
     try {
-      const response = await fetch("http://10.10.51.16:3001/api/v1/config", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(data),
-      });
+      const response = await fetch(
+        "https://zaloapp.ongdev.online/api/v1/config",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(data),
+        }
+      );
       if (response.ok) {
         alert("Data submitted successfully!");
         setFileName("");

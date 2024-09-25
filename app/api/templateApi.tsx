@@ -1,7 +1,7 @@
 import axios from "axios";
 
-const apiUrl = "http://10.10.51.16:3001/api/v1/template";
-const templateInfoUrl = "http://10.10.51.16:3001/api/v1/template/info";
+const apiUrl = "https://zaloapp.ongdev.online/api/v1/template";
+const templateInfoUrl = "https://zaloapp.ongdev.online/api/v1/template/info";
 
 export const fetchTemplates = async (offset: number) => {
   try {
@@ -38,7 +38,9 @@ export interface Campaign {
 // Fetch campaigns from API
 export const fetchCampaignData = async (): Promise<Campaign[]> => {
   try {
-    const response = await fetch("http://10.10.51.16:3001/api/v1/campaign");
+    const response = await fetch(
+      "https://zaloapp.ongdev.online/api/v1/campaign"
+    );
     if (!response.ok) {
       throw new Error("Network response was not ok");
     }

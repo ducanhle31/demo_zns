@@ -27,7 +27,7 @@ export const CustomerSelector = (props: ICustomerSelectorProps) => {
     const fetchData = async () => {
       try {
         const response = await axios.get<CampaignTemplate[]>(
-          "http://10.10.51.16:3001/api/v1/config"
+          "https://zaloapp.ongdev.online/api/v1/config"
         );
         setData(response.data);
       } catch (error) {
