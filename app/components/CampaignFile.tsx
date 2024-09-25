@@ -10,21 +10,15 @@ const initialFakeUsers = [
   },
   {
     id: 2,
-    phone: "0376022820",
-    customers: "4398",
-    customer_name: "Nguyễn Văn A",
+    phone: "0985656905",
+    customers: "6586590075778253207",
+    customer_name: "Lê Minh",
   },
   {
     id: 3,
-    phone: "0312345678",
-    customers: "12345",
-    customer_name: "Trần Thị B",
-  },
-  {
-    id: 4,
-    phone: "0398765432",
-    customers: "54321",
-    customer_name: "Lê Hoàng C",
+    phone: "0344480909",
+    customers: "8060438868895809827",
+    customer_name: "Đức Anh",
   },
 ];
 
