@@ -8,7 +8,7 @@ export default function Home() {
     <Provider store={store}>
       <div>
         <main className="max-w-7xl mx-auto  py-14">
-          <div className="text-3xl text-center">DEMO TIN OA & ZNS</div>
+          <div className="text-3xl text-center py-2">DEMO TIN OA & ZNS</div>
           <Navbar />
         </main>
       </div>

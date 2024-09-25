@@ -44,6 +44,14 @@ export const CampaignListFile: React.FC = () => {
     fetchData();
   }, []);
 
+  // Utility function to format phone numbers from 84xxxxxxxxx to 0xxxxxxxxx
+  const formatPhoneNumber = (phone: string) => {
+    if (phone.startsWith("84")) {
+      return "0" + phone.slice(2);
+    }
+    return phone;
+  };
+
   if (loading) {
     return <Loading />;
   }
@@ -96,7 +104,7 @@ export const CampaignListFile: React.FC = () => {
                   {template.customers[0].customer_name}
                 </td>
                 <td className="border border-gray-300 p-2">
-                  {template.customers[0].phone}
+                  {formatPhoneNumber(template.customers[0].phone)}
                 </td>
                 <td className="border border-gray-300 p-2">
                   {template.customers[0].customers}
@@ -109,7 +117,7 @@ export const CampaignListFile: React.FC = () => {
                     {customer.customer_name}
                   </td>
                   <td className="border border-gray-300 p-2">
-                    {customer.phone}
+                    {formatPhoneNumber(customer.phone)}
                   </td>
                   <td className="border border-gray-300 p-2">
                     {customer.customers}
