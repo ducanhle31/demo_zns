@@ -3,6 +3,7 @@ import { CampaignForm } from "./CampaignForm";
 import { CampaignList } from "./CampaignList";
 import { CampaignFile } from "./CampaignFile";
 import { CampaignListFile } from "./CampaignListFile";
+import { ListUser } from "./ListUser";
 
 export const Navbar = () => {
   const [activeTab, setActiveTab] = useState<string>("Thêm mới");
@@ -26,6 +27,11 @@ export const Navbar = () => {
       id: "Danh sách tệp KH",
       label: "Danh sách tệp KH",
       content: <CampaignListFile />,
+    },
+    {
+      id: "Danh sách SV tham gia khai giảng",
+      label: "Danh sách SV tham gia khai giảng",
+      content: <ListUser />,
     },
   ];
   return (
