@@ -1,13 +1,44 @@
 "use client";
-import { Navbar } from "./components/Navbar";
+
+import { useEffect, useState } from "react";
+import { Route, Routes, useLocation } from "react-router-dom";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import { Loading } from "./components/Loading";
+import PageTitle from "./login/PageTitle";
+import { Login } from "./login/Login";
+import PageIndex from "./login/page";
+
 
 export default function Home() {
-  return (
-    <div>
-      <main className="max-w-7xl mx-auto  py-14">
-        <div className="text-3xl text-center py-2">DEMO TIN OA & ZNS</div>
-        <Navbar />
-      </main>
-    </div>
+  const [loading, setLoading] = useState(true);
+  const { pathname } = useLocation();
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [pathname]);
+
+  useEffect(() => {
+    setTimeout(() => setLoading(false), 500);
+  }, []);
+
+  return loading ? (
+    <Loading />
+  ) : (
+    <>
+      <ToastContainer />
+      <Routes>
+        <Route
+          path="/login"
+          element={
+            <>
+              <PageTitle title="Đăng nhập" />
+              <Login />
+            </>
+          }
+        />
+        <Route path="/*" element={<PageIndex />}></Route>
+      </Routes>
+    </>
   );
 }
