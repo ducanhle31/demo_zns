@@ -15,7 +15,7 @@ interface CampaignTemplate {
   customers: Customer[];
 }
 
-export const CampaignListFile: React.FC = () => {
+export const CampaignListFile = () => {
   const [templates, setTemplates] = useState<CampaignTemplate[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);

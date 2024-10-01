@@ -1,8 +1,8 @@
 import axios from "axios";
 import { useState } from "react";
 import { useCampaign } from "../hook/useCampaign";
-import CustomerSelector from "./customersData";
-import PhoneSelector from "./PhoneSelector ";
+import { CustomerSelector } from "./customersData";
+import { PhoneSelector } from "./PhoneSelector ";
 import { TemplateSelect } from "./TemplateSelect";
 
 const getLocalDateTime = () => {

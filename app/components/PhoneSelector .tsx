@@ -95,4 +95,3 @@ export const PhoneSelector = (props: IPhoneSelectorProps) => {
   );
 };
 
-export default PhoneSelector;
