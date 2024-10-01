@@ -1,7 +1,7 @@
 "use client";
 import React, { useState, useEffect } from "react";
 import { useDispatch } from "react-redux";
-import { setTemplateId } from "../redux/campaign.Slice";
+import { setTemplateId } from "../../lib/redux/campaign.Slice";
 import { fetchTemplates, fetchTemplateInfo } from "../api/templateApi";
 
 interface Template {
@@ -26,7 +26,7 @@ export const TemplateSelect = () => {
     null
   );
   const [loading, setLoading] = useState(false);
-  const [page,] = useState(0);
+  const [page] = useState(0);
   const [, setHasMore] = useState(true);
   const dispatch = useDispatch();
   const templatesPerPage = 50;
