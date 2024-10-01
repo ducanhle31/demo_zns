@@ -1,3 +1,4 @@
+"use client";
 import { useState } from "react";
 import { CampaignForm } from "./CampaignForm";
 import { CampaignList } from "./CampaignList";
